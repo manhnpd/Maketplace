@@ -1,0 +1,54 @@
+.cta-section { background: none; padding: 40px 0 80px; }
+
+.cta-card {
+  background: linear-gradient(135deg, var(--green-500), var(--green-700));
+  border-radius: var(--radius-xl);
+  padding: 64px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-card::before {
+  content: '';
+  position: absolute;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  top: -200px; right: -100px;
+}
+
+.cta-card::after {
+  content: '';
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  bottom: -150px; left: -50px;
+}
+
+.cta-card h2 {
+  color: var(--white);
+  font-size: 2rem;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.cta-card p {
+  color: rgba(255,255,255,0.8);
+  font-size: 1.1rem;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.cta-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .cta-card { padding: 40px 24px; }
+  .cta-actions { flex-direction: column; }
+}

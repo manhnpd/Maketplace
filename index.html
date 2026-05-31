@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DesignHub — Marketplace for Digital Assets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- ===== HEADER / NAVBAR ===== -->
+    <header class="header" id="header">
+        <div class="container header-inner">
+            <a href="#" class="logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="8" fill="#22C55E"/>
+                    <path d="M10 16L14 20L22 12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Design<span class="logo-accent">Hub</span></span>
+            </a>
+
+            <nav class="nav" id="nav">
+                <a href="#home" class="nav-link active">Trang chủ</a>
+                <a href="#explore" class="nav-link">Khám phá</a>
+                <a href="#categories" class="nav-link">Danh mục</a>
+                <a href="#pricing" class="nav-link">Gói dịch vụ</a>
+                <a href="#designers" class="nav-link">Designer</a>
+            </nav>
+
+            <div class="header-actions">
+                <div class="search-box" id="searchBox">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" placeholder="Tìm kiếm sản phẩm..." id="searchInput">
+                </div>
+                <button class="btn btn-outline" id="loginBtn">Đăng nhập</button>
+                <button class="btn btn-primary" id="registerBtn">Đăng ký</button>
+                <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MOBILE NAV ===== -->
+    <div class="mobile-nav" id="mobileNav">
+        <a href="#home" class="nav-link">Trang chủ</a>
+        <a href="#explore" class="nav-link">Khám phá</a>
+        <a href="#categories" class="nav-link">Danh mục</a>
+        <a href="#pricing" class="nav-link">Gói dịch vụ</a>
+        <a href="#designers" class="nav-link">Designer</a>
+        <div class="mobile-nav-actions">
+            <button class="btn btn-outline btn-full">Đăng nhập</button>
+            <button class="btn btn-primary btn-full">Đăng ký miễn phí</button>
+        </div>
+    </div>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero" id="home">
+        <div class="hero-bg">
+            <div class="hero-circle hero-circle-1"></div>
+            <div class="hero-circle hero-circle-2"></div>
+            <div class="hero-circle hero-circle-3"></div>
+        </div>
+        <div class="container hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                Mới cập nhật hàng tuần
+            </div>
+            <h1 class="hero-title">
+                Marketplace cho<br>
+                <span class="text-gradient">Digital Assets</span> chất lượng cao
+            </h1>
+            <p class="hero-desc">
+                Khám phá hàng nghìn icon, template, UI kit và tài nguyên thiết kế từ các designer hàng đầu.
+                Miễn phí & Premium — làm được gì cũng được!
+            </p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number" data-target="2847">0</span>
+                    <span class="stat-label">Sản phẩm</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number" data-target="563">0</span>
+                    <span class="stat-label">Designer</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number" data-target="12450">0</span>
+                    <span class="stat-label">Lượt tải</span>
+                </div>
+            </div>
+            <div class="hero-actions">
+                <a href="#explore" class="btn btn-primary btn-lg">
+                    Khám phá ngay
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+                <a href="#pricing" class="btn btn-outline btn-lg">Xem gói Premium</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURED / TRENDING ===== -->
+    <section class="section" id="explore">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">🔥 Xu hướng</h2>
+                    <p class="section-desc">Những sản phẩm được tải nhiều nhất tuần này</p>
+                </div>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all">Tất cả</button>
+                    <button class="filter-tab" data-filter="free">Miễn phí</button>
+                    <button class="filter-tab" data-filter="pro">Premium</button>
+                    <button class="filter-tab" data-filter="new">Mới nhất</button>
+                </div>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <!-- Products injected via JS -->
+            </div>
+
+            <div class="section-footer">
+                <button class="btn btn-outline btn-lg" id="loadMoreBtn">
+                    Xem thêm sản phẩm
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CATEGORIES ===== -->
+    <section class="section section-alt" id="categories">
+        <div class="container">
+            <div class="section-header section-header-center">
+                <h2 class="section-title">📂 Danh mục sản phẩm</h2>
+                <p class="section-desc">Khám phá theo danh mục — từ icon, template đến UI Kit</p>
+            </div>
+
+            <div class="categories-grid" id="categoriesGrid">
+                <!-- Categories injected via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== HOW IT WORKS ===== -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header section-header-center">
+                <h2 class="section-title">Cách thức hoạt động</h2>
+                <p class="section-desc">Ba bước đơn giản để bắt đầu</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <div class="step-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </div>
+                    <h3>Đăng ký tài khoản</h3>
+                    <p>Tạo tài khoản miễn phí để bắt đầu khám phá và tải xuống tài nguyên thiết kế.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <div class="step-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </div>
+                    <h3>Tìm kiếm & Khám phá</h3>
+                    <p>Duyệt qua hàng nghìn sản phẩm, lọc theo danh mục, giá cả và đánh giá.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <div class="step-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    </div>
+                    <h3>Tải xuống & Sử dụng</h3>
+                    <p>Tải xuống ngay lập tức và sử dụng tự do trong dự án của bạn.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PRICING ===== -->
+    <section class="section section-alt" id="pricing">
+        <div class="container">
+            <div class="section-header section-header-center">
+                <h2 class="section-title">💎 Gói dịch vụ</h2>
+                <p class="section-desc">Chọn gói phù hợp với nhu cầu của bạn — nâng cấp bất cứ lúc nào</p>
+            </div>
+            <div class="pricing-toggle">
+                <span class="toggle-label" id="monthlyLabel">Hàng tháng</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="pricingToggle">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span class="toggle-label" id="yearlyLabel">Hàng năm <span class="save-badge">Tiết kiệm 25%</span></span>
+            </div>
+            <div class="pricing-grid">
+                <!-- Free Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <div class="pricing-icon pricing-icon-free">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <h3 class="pricing-name">Free</h3>
+                        <p class="pricing-tagline">Bắt đầu miễn phí</p>
+                    </div>
+                    <div class="pricing-price">
+                        <span class="price-amount">0</span>
+                        <span class="price-currency">₫</span>
+                        <span class="price-period">/tháng</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li class="feature included">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Truy cập 500+ sản phẩm miễn phí
+                        </li>
+                        <li class="feature included">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Tải xuống không giới hạn (Free)
+                        </li>
+                        <li class="feature included">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Định dạng SVG, PNG
+                        </li>
+                        <li class="feature not-included">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            Sản phẩm Premium
+                        </li>
+                        <li class="feature not-included">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            Hỗ trợ ưu tiên
+                        </li>
+                    </ul>
+                    <button class="btn btn-outline btn-full pricing-btn">Bắt đầu miễn phí</button>
+                </div>
+
+                <!-- Pro Plan -->
+                <div class="pricing-card pricing-popular">
+                    <div class="popular-badge">⭐ Phổ biến nhất</div>
+                    <div class="pricing-header">
+                        <div class="pricing-icon pricing-icon-pro">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </div>
+                        <h3 class="pricing-name">Pro</h3>
+                        <p class="pricing-tagline">Cho cá nhân & freelancer</p>
+                    </div>
+                    <div class="pricing-price">
+                        <span class="price-amount" data-monthly="199000" data-yearly="149000">199.000</span>
+                        <span class="price-currency">₫</span>
+                        <span class="price-period">/tháng</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li class="feature included">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Truy cập <strong>tất cả</strong> 2.800+ sản phẩm
+                        </li>
+                        <li class="feature included">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Tải xuống không giới hạn
+                        </li>
+                        <li class="feature included">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Định dạng SVG, PNG, Figma
+                        </li>
+                        <li class="feature included">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Bản cập nhật mới mỗi tuần
+                        </li>
+                        <li class="feature included">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Hỗ trợ ưu tiên qua email
+                        </li>
+                    </ul>
+                    <button class="btn btn-primary btn-full pricing-btn">Nâng cấp Pro</button>
+                </div>
+
+                <!-- Team Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <div class="pricing-icon pricing-icon-team">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <h3 class="pricing-name">Team</h3>
+                        <p class="pricing-tagline">Cho đội & công ty</p>
+                    </div>
+                    <div class="pricing-price">
+                        <span class="price-amount" data-monthly="499000" data-yearly="374000">499.000</span>
+                        <span class="price-currency">₫</span>
+                        <span class="price-period">/tháng</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li class="feature included">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Mọi tính năng của Pro
+                        </li>
+                        <li class="feature included">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Tối đa 10 thành viên
+                        </li>
+                        <li class="feature included">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Giấy phép thương mại
+                        </li>
+                        <li class="feature included">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Hỗ trợ 24/7
+                        </li>
+                        <li class="feature included">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            Tùy chỉnh theo yêu cầu
+                        </li>
+                    </ul>
+                    <button class="btn btn-outline btn-full pricing-btn">Liên hệ chúng tôi</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOR DESIGNERS ===== -->
+    <section class="section" id="designers">
+        <div class="container">
+            <div class="designers-banner">
+                <div class="designers-content">
+                    <h2 class="section-title">🎨 Bạn là Designer?</h2>
+                    <p class="designers-desc">
+                        Đăng tải tác phẩm của bạn và kiếm tiền! Thiết kế icon, template, UI Kit —
+                        chúng tôi giúp bạn tiếp cận hàng nghìn người dùng.
+                        <strong>Hoa hồng cạnh tranh</strong> — bạn giữ phần lớn doanh thu.
+                    </p>
+                    <div class="designers-features">
+                        <div class="df-item">
+                            <div class="df-icon">💰</div>
+                            <div>
+                                <strong>Hoa hồng 80%</strong>
+                                <span>Bạn giữ 80% mỗi lần bán</span>
+                            </div>
+                        </div>
+                        <div class="df-item">
+                            <div class="df-icon">📢</div>
+                            <div>
+                                <strong>Quảng cáo sản phẩm</strong>
+                                <span>Đẩy sản phẩm lên top với phí quảng cáo</span>
+                            </div>
+                        </div>
+                        <div class="df-item">
+                            <div class="df-icon">📊</div>
+                            <div>
+                                <strong>Thống kê chi tiết</strong>
+                                <span>Theo dõi doanh thu & lượt tải</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="designers-actions">
+                        <button class="btn btn-primary btn-lg">Bắt đầu bán ngay</button>
+                        <button class="btn btn-outline btn-lg">Tìm hiểu thêm</button>
+                    </div>
+                </div>
+                <div class="designers-visual">
+                    <div class="designers-card-stack">
+                        <div class="dc-card dc-card-1">
+                            <div class="dc-chart">
+                                <div class="dc-bar" style="height:30%"></div>
+                                <div class="dc-bar" style="height:50%"></div>
+                                <div class="dc-bar" style="height:45%"></div>
+                                <div class="dc-bar" style="height:70%"></div>
+                                <div class="dc-bar" style="height:85%"></div>
+                                <div class="dc-bar" style="height:65%"></div>
+                                <div class="dc-bar" style="height:90%"></div>
+                            </div>
+                            <div class="dc-label">Doanh thu tháng này</div>
+                            <div class="dc-amount">₫ 12.450.000</div>
+                        </div>
+                        <div class="dc-card dc-card-2">
+                            <div class="dc-icon-row">
+                                <div class="dc-mini-icon"></div>
+                                <div class="dc-mini-icon"></div>
+                                <div class="dc-mini-icon"></div>
+                                <div class="dc-mini-icon"></div>
+                            </div>
+                            <div class="dc-label">Sản phẩm đã bán</div>
+                            <div class="dc-amount">847 lượt tải</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="section section-alt">
+        <div class="container">
+            <div class="section-header section-header-center">
+                <h2 class="section-title">💬 Người dùng nói gì</h2>
+                <p class="section-desc">Hàng nghìn designer và developer tin tưởng sử dụng DesignHub</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Thư viện icon chất lượng cao nhất tôi từng dùng. Gói Pro hoàn toàn xứng đáng với từng đồng!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MN</div>
+                        <div>
+                            <strong>Minh Nguyễn</strong>
+                            <span>UI/UX Designer tại FPT</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Tôi kiếm được hơn 10 triệu mỗi tháng nhờ bán icon pack trên DesignHub. Nền tảng tuyệt vời cho designer!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">TL</div>
+                        <div>
+                            <strong>Thu Lê</strong>
+                            <span>Freelance Illustrator</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Từ khi dùng DesignHub, tốc độ thiết kế của team tăng lên gấp đôi. Cập nhật hàng tuần rất có giá trị."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">HP</div>
+                        <div>
+                            <strong>Hoàng Phạm</strong>
+                            <span>Lead Developer tại VNG</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="section cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <h2>Sẵn sàng bắt đầu?</h2>
+                <p>Tham gia cùng 12.000+ người dùng và 500+ designer trên DesignHub</p>
+                <div class="cta-actions">
+                    <button class="btn btn-white btn-lg">Đăng ký miễn phí</button>
+                    <button class="btn btn-outline-white btn-lg">Trở thành Designer</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="8" fill="#22C55E"/>
+                            <path d="M10 16L14 20L22 12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Design<span class="logo-accent">Hub</span></span>
+                    </a>
+                    <p class="footer-desc">Marketplace cho digital assets chất lượng cao. Miễn phí & Premium.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Twitter">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="GitHub">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Dribbble">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 24C5.385 24 0 18.615 0 12S5.385 0 12 0s12 5.385 12 12-5.385 12-12 12zm10.12-10.358c-.35-.11-3.17-.953-6.384-.438 1.34 3.684 1.887 6.684 1.992 7.308 2.3-1.555 3.936-4.02 4.395-6.87zm-6.115 7.808c-.153-.9-.75-4.032-2.19-7.77l-.066.02c-5.79 2.015-7.86 6.025-8.04 6.4 1.73 1.358 3.92 2.166 6.29 2.166 1.42 0 2.77-.29 4-.81zm-11.62-2.58c.232-.4 3.045-5.055 8.332-6.765.135-.045.27-.084.405-.12-.26-.585-.54-1.167-.832-1.74C7.17 11.775 2.206 11.71 1.756 11.7l-.004.312c0 2.633.998 5.037 2.634 6.855zm-2.42-8.955c.46.008 4.683.026 9.477-1.248-1.698-3.018-3.53-5.558-3.8-5.928-2.868 1.35-5.01 3.99-5.676 7.17zM9.6 2.052c.282.38 2.145 2.914 3.822 6 3.645-1.365 5.19-3.44 5.373-3.702C16.86 2.61 14.545 1.62 12 1.62c-.824 0-1.63.1-2.4.285v.146zm10.14 3.2c-.22.298-1.88 2.478-5.64 4.018.22.465.41.945.6 1.42.07.16.13.33.19.49 3.41-.43 6.8.26 7.14.33-.02-2.42-.88-4.64-2.29-6.26z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Sản phẩm</h4>
+                    <a href="#">Icon</a>
+                    <a href="#">Templates</a>
+                    <a href="#">UI Kits</a>
+                    <a href="#">Illustrations</a>
+                    <a href="#">Fonts</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Công ty</h4>
+                    <a href="#">Về chúng tôi</a>
+                    <a href="#">Blog</a>
+                    <a href="#">Tuyển dụng</a>
+                    <a href="#">Liên hệ</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Hỗ trợ</h4>
+                    <a href="#">Trung tâm trợ giúp</a>
+                    <a href="#">Giấy phép</a>
+                    <a href="#">Điều khoản</a>
+                    <a href="#">Bảo mật</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 DesignHub. All rights reserved.</p>
+                <p>Made with 💚 in Vietnam</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== MODALS ===== -->
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <button class="modal-close" id="loginModalClose">&times;</button>
+            <div class="modal-header">
+                <h2>Đăng nhập</h2>
+                <p>Chào mừng bạn quay trở lại!</p>
+            </div>
+            <form class="modal-form" id="loginForm">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+                <div class="form-row">
+                    <label class="checkbox">
+                        <input type="checkbox"> Ghi nhớ đăng nhập
+                    </label>
+                    <a href="#" class="form-link">Quên mật khẩu?</a>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Đăng nhập</button>
+            </form>
+            <div class="modal-divider"><span>hoặc</span></div>
+            <button class="btn btn-social btn-full">
+                <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                Đăng nhập với Google
+            </button>
+            <p class="modal-footer-text">Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng ký ngay</a></p>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal-overlay" id="registerModal">
+        <div class="modal">
+            <button class="modal-close" id="registerModalClose">&times;</button>
+            <div class="modal-header">
+                <h2>Đăng ký</h2>
+                <p>Tạo tài khoản miễn phí</p>
+            </div>
+            <form class="modal-form" id="registerForm">
+                <div class="form-group">
+                    <label>Họ tên</label>
+                    <input type="text" placeholder="Nguyễn Văn A" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" placeholder="Ít nhất 8 ký tự" required minlength="8">
+                </div>
+                <div class="form-group">
+                    <label>Vai trò</label>
+                    <div class="role-select">
+                        <label class="role-option">
+                            <input type="radio" name="role" value="user" checked>
+                            <span class="role-card">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                Người dùng
+                            </span>
+                        </label>
+                        <label class="role-option">
+                            <input type="radio" name="role" value="designer">
+                            <span class="role-card">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+                                Designer
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Tạo tài khoản</button>
+            </form>
+            <div class="modal-divider"><span>hoặc</span></div>
+            <button class="btn btn-social btn-full">
+                <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                Đăng ký với Google
+            </button>
+            <p class="modal-footer-text">Đã có tài khoản? <a href="#" id="switchToLogin">Đăng nhập</a></p>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal modal-product">
+            <button class="modal-close" id="productModalClose">&times;</button>
+            <div class="product-modal-content" id="productModalContent">
+                <!-- Filled via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
