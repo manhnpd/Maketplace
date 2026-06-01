@@ -1,13 +1,20 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getCategories } from '../services/api';
 import './Categories.css';
 
 export default function Categories({ showToast }) {
   const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getCategories().then(res => setCategories(res.data || [])).catch(() => {});
   }, []);
+
+  const handleCategoryClick = (cat) => {
+    showToast('🔍', `Đang chuyển đến: ${cat.name}`);
+    navigate(`/danh-muc/${cat.slug}`);
+  };
 
   return (
     <section className="section section-alt" id="categories">
@@ -21,7 +28,7 @@ export default function Categories({ showToast }) {
             <div
               key={cat.id}
               className="category-card"
-              onClick={() => showToast('🔍', `Đang hiển thị danh mục: ${cat.name}`)}
+              onClick={() => handleCategoryClick(cat)}
             >
               <div className="category-icon">{cat.icon}</div>
               <div className="category-name">{cat.name}</div>

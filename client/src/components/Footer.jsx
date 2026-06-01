@@ -1,4 +1,13 @@
+import { Link } from 'react-router-dom';
 import './Footer.css';
+
+const PRODUCT_LINKS = [
+  { name: 'Icon', slug: 'icon-packs' },
+  { name: 'Templates', slug: 'templates' },
+  { name: 'UI Kits', slug: 'ui-kits' },
+  { name: 'Illustrations', slug: 'illustrations' },
+  { name: 'Fonts', slug: 'fonts' },
+];
 
 export default function Footer() {
   return (
@@ -24,8 +33,8 @@ export default function Footer() {
           </div>
           <div className="footer-links">
             <h4>Sản phẩm</h4>
-            {['Icon', 'Templates', 'UI Kits', 'Illustrations', 'Fonts'].map(item => (
-              <a key={item} href="#">{item}</a>
+            {PRODUCT_LINKS.map(item => (
+              <Link key={item.slug} to={`/danh-muc/${item.slug}`}>{item.name}</Link>
             ))}
           </div>
           <div className="footer-links">

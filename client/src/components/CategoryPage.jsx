@@ -1,17 +1,30 @@
 import { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
-import { getProducts } from '../services/api';
+import { getProducts, getCategories } from '../services/api';
 import ProductCard, { ProductPreview } from './ProductCard';
+import './CategoryPage.css';
 import './ProductGrid.css';
 
-export default function ProductGrid({ showToast, cart }) {
+export default function CategoryPage({ showToast, cart }) {
+  const { slug } = useParams();
   const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState(null);
   const [filter, setFilter] = useState('all');
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
-    getProducts({ filter }).then(res => setProducts(res.data || [])).catch(() => {});
-  }, [filter]);
+    getCategories().then(res => {
+      const found = (res.data || []).find(c => c.slug === slug);
+      setCategory(found || null);
+    }).catch(() => {});
+  }, [slug]);
+
+  useEffect(() => {
+    const params = { filter };
+    if (slug) params.category = slug;
+    getProducts(params).then(res => setProducts(res.data || [])).catch(() => {});
+  }, [slug, filter]);
 
   const handleProductClick = (product) => setSelectedProduct(product);
 
@@ -32,12 +45,32 @@ export default function ProductGrid({ showToast, cart }) {
 
   return (
     <>
-      <section className="section" id="explore">
+      <div className="section">
         <div className="container">
+          {/* Breadcrumb */}
+          <nav className="breadcrumb">
+            <Link to="/">Trang chủ</Link>
+            <span className="separator">›</span>
+            <span>Danh mục</span>
+            <span className="separator">›</span>
+            <span className="current">{category?.name || slug}</span>
+          </nav>
+
+          {/* Category Header */}
+          <div className="category-page-header">
+            <div className="category-page-icon">{category?.icon || '📂'}</div>
+            <h1 className="category-page-title">{category?.name || slug}</h1>
+            <p className="category-page-count">{category?.count || products.length} sản phẩm</p>
+          </div>
+
+          {/* Filter Tabs */}
           <div className="section-header">
             <div>
-              <h2 className="section-title">🔥 Xu hướng</h2>
-              <p className="section-desc">Những sản phẩm được tải nhiều nhất tuần này</p>
+              <h2 className="section-title">Sản phẩm</h2>
+              <p className="section-desc">
+                {products.length} kết quả
+                {filter !== 'all' ? ` — ${filter === 'free' ? 'Miễn phí' : filter === 'pro' ? 'Premium' : 'Mới nhất'}` : ''}
+              </p>
             </div>
             <div className="filter-tabs">
               {['all', 'free', 'pro', 'new'].map(f => (
@@ -52,10 +85,11 @@ export default function ProductGrid({ showToast, cart }) {
             </div>
           </div>
 
+          {/* Product Grid */}
           {products.length === 0 ? (
             <div className="products-empty">
               <span style={{ fontSize: '2rem' }}>📭</span>
-              <p>Không tìm thấy sản phẩm nào</p>
+              <p>Không tìm thấy sản phẩm nào trong danh mục này</p>
             </div>
           ) : (
             <div className="products-grid">
@@ -65,7 +99,7 @@ export default function ProductGrid({ showToast, cart }) {
             </div>
           )}
         </div>
-      </section>
+      </div>
 
       {/* Product Detail Modal */}
       {selectedProduct && (

@@ -3,6 +3,7 @@ const router = express.Router();
 const { getProducts, getProduct, getCategories } = require('../controllers/productController');
 const { register, login } = require('../controllers/authController');
 const { getPricing, getDesigners, getTestimonials, getStats } = require('../controllers/siteController');
+const { createOrder } = require('../controllers/orderController');
 
 // Products
 router.get('/products', getProducts);
@@ -18,5 +19,8 @@ router.get('/pricing', getPricing);
 router.get('/designers', getDesigners);
 router.get('/testimonials', getTestimonials);
 router.get('/stats', getStats);
+
+// Orders
+router.post('/orders', createOrder);
 
 module.exports = router;

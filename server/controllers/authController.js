@@ -1,43 +1,78 @@
-// Simple in-memory users store (demo only — use DB in production)
-const users = [];
+const supabase = require('../config/supabase');
 
-const register = (req, res) => {
+const register = async (req, res) => {
   const { name, email, password, role } = req.body;
 
   if (!name || !email || !password) {
     return res.status(400).json({ success: false, message: 'Vui lòng điền đầy đủ thông tin' });
   }
 
-  if (users.find(u => u.email === email)) {
-    return res.status(400).json({ success: false, message: 'Email đã được đăng ký' });
+  // Create auth user in Supabase
+  const { data: authData, error: authErr } = await supabase.auth.signUp({
+    email,
+    password,
+  });
+
+  if (authErr) {
+    const msg = authErr.message.includes('already registered')
+      ? 'Email đã được đăng ký'
+      : authErr.message;
+    return res.status(400).json({ success: false, message: msg });
   }
 
-  const user = {
-    id: Date.now(),
-    name, email, role: role || 'user',
-    createdAt: new Date().toISOString()
-  };
+  const userId = authData.user.id;
 
-  users.push({ ...user, password });
-  res.status(201).json({ success: true, data: { id: user.id, name: user.name, email: user.email, role: user.role } });
+  // Insert profile
+  const { error: profErr } = await supabase.from('profiles').insert({
+    id: userId,
+    name,
+    email,
+    role: role || 'user',
+  });
+
+  if (profErr) {
+    return res.status(500).json({ success: false, message: 'Tạo hồ sơ thất bại' });
+  }
+
+  res.status(201).json({
+    success: true,
+    data: { id: userId, name, email, role: role || 'user' },
+    token: authData.session?.access_token || null,
+  });
 };
 
-const login = (req, res) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ success: false, message: 'Vui lòng nhập email và mật khẩu' });
   }
 
-  const user = users.find(u => u.email === email && u.password === password);
-  if (!user) {
+  const { data: authData, error: authErr } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (authErr) {
     return res.status(401).json({ success: false, message: 'Email hoặc mật khẩu không đúng' });
   }
 
+  // Fetch profile
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', authData.user.id)
+    .single();
+
   res.json({
     success: true,
-    data: { id: user.id, name: user.name, email: user.email, role: user.role },
-    token: 'demo-token-' + user.id
+    data: {
+      id: authData.user.id,
+      name: profile?.name || '',
+      email: authData.user.email,
+      role: profile?.role || 'user',
+    },
+    token: authData.session.access_token,
   });
 };
 

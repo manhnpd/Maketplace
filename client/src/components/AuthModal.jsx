@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { login, register } from '../services/api';
+import { login, register, saveAuth } from '../services/api';
 import './AuthModal.css';
 
-export default function AuthModal({ type, onClose, onSwitch, showToast }) {
+export default function AuthModal({ type, onClose, onSwitch, showToast, onAuthSuccess }) {
   const [formData, setFormData] = useState({
     name: '', email: '', password: '', role: 'user'
   });
@@ -18,12 +18,18 @@ export default function AuthModal({ type, onClose, onSwitch, showToast }) {
       if (type === 'login') {
         const res = await login({ email: formData.email, password: formData.password });
         if (res.success) {
+          saveAuth(res.token, res.data);
+          onAuthSuccess?.(res.data);
           onClose();
           showToast('👋', 'Đăng nhập thành công! Chào mừng bạn trở lại.');
         }
       } else {
         const res = await register(formData);
         if (res.success) {
+          if (res.token) {
+            saveAuth(res.token, res.data);
+            onAuthSuccess?.(res.data);
+          }
           onClose();
           showToast('🎉', 'Đăng ký thành công! Kiểm tra email để xác nhận.');
         }
