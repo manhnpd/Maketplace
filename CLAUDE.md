@@ -52,17 +52,18 @@ SUPABASE_SERVICE_KEY=eyJ...
 
 ### Backend (`server/`)
 
-- **Express.js 5** on port 5000 (configured via `.env`)
+- **Express.js 5** (server's own `package.json`) on port 5000 (configured via `.env`). Note: root `package.json` has a stale Express 4 dependency that is not used at runtime.
 - **Supabase** for database and authentication
   - Client initialized in `server/config/supabase.js` using the service_role key (bypasses RLS for server-side queries)
   - Auth uses `supabase.auth.signUp` / `signInWithPassword`; user profiles stored in `profiles` table
-- Database schema in `server/supabase-schema.sql` — tables: `products`, `categories`, `designers`, `pricing_plans`, `pricing_features`, `testimonials`, `site_stats`, `profiles`
+- Database schema in `server/supabase-schema.sql` — tables: `products`, `categories`, `designers`, `pricing_plans`, `pricing_features`, `testimonials`, `site_stats`, `profiles`, `orders`, `order_items`
 - All tables have RLS enabled with public read policies; `profiles` restricts read/update to the owning user
 - Products reference categories and designers via foreign keys (`category_id`, `designer_id`) with joins in queries
 - Seed data in `server/seed.js` reads from `server/models/data.js` and maps name-based references to IDs
-- Route structure: single router in `server/routes/api.js` mounted at `/api`, delegating to three controllers:
+- Route structure: single router in `server/routes/api.js` mounted at `/api`, delegating to four controllers:
   - `productController` — `/api/products`, `/api/products/:id`, `/api/categories` (supports `?filter=free|pro|new`, `?search=`, `?category=`)
   - `authController` — `/api/auth/register`, `/api/auth/login` (Supabase Auth + profiles table)
+  - `orderController` — `/api/orders` (POST; creates order + order_items, validates required fields: name, email, phone)
   - `siteController` — `/api/pricing`, `/api/designers`, `/api/testimonials`, `/api/stats`
 - All API responses follow `{ success: boolean, data: any, total?: number }`
 - Controllers map snake_case DB columns back to camelCase to match the frontend contract
@@ -71,12 +72,17 @@ SUPABASE_SERVICE_KEY=eyJ...
 
 - **React 19 + Vite 8** on port 3000
 - Vite dev server proxies `/api` requests to `localhost:5000`
+- Routing via React Router DOM (`BrowserRouter` in `main.jsx`):
+  - `/` — landing page with Hero, ProductGrid, Categories, HowItWorks, Pricing, Designers, Testimonials, CTA sections
+  - `/danh-muc/:slug` — category detail page (`CategoryPage`)
+  - `/thanh-toan` — checkout page (`CheckoutPage`)
 - `client/src/services/api.js` — Axios wrapper with auth token interceptors (attaches `Authorization` header from localStorage, clears token on 401)
 - Auth token and user stored in localStorage via `saveAuth()`/`clearAuth()` helpers in api.js
 - Cart state managed via `client/src/hooks/useCart.jsx` — persisted in localStorage
 - Toast notifications via `client/src/hooks/useToast.jsx`
 - Components are co-located with their CSS (e.g., `Header.jsx` + `Header.css`)
-- Dependencies: `lucide-react` (icons), `react-router-dom` (available but not used for routing), `zod` (available for validation)
+- Global UI state lives in `App.jsx` (user, auth modal, cart drawer, toasts) and is passed down via props — no context providers or state management library
+- Dependencies: `lucide-react` (icons), `react-router-dom` (routing), `zod` (available for validation)
 
 ### Production serving
 
