@@ -16,6 +16,8 @@
   align-items: center;
   justify-content: space-between;
   height: 72px;
+  max-width: 100%;
+  padding: 0 32px;
 }
 
 .logo {

@@ -32,7 +32,18 @@
       "Bash(sensible-browser http://localhost:3000)",
       "Bash(gh --version)",
       "Bash(lsof -ti:5000 -ti:3001)",
-      "Bash(xargs kill)"
+      "Bash(xargs kill)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'docs: cập nhật CLAUDE.md - thêm orderController, routing, sửa Express version' -m '- Thêm orderController và endpoint POST /api/orders *)",
+      "Bash(git push *)",
+      "Bash(gh api *)",
+      "Bash(/snap/bin/gh auth *)",
+      "Bash(/snap/bin/gh api *)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(npx --yes @mermaid-js/mermaid-cli --version)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(timeout 15 /snap/bin/chromium --headless=new --no-sandbox --disable-gpu --screenshot=/tmp/designhub-home.png --window-size=1440,900 \"http://localhost:3000/\")"
     ]
   }
 }

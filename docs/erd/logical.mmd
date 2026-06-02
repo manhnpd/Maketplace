@@ -1,0 +1,110 @@
+erDiagram
+    PROFILE {
+        uuid id PK
+        string name
+        string email
+        string role "user / designer"
+        datetime created_at
+    }
+
+    CATEGORY {
+        int id PK
+        string name
+        string slug
+        string icon
+        int count
+    }
+
+    DESIGNER {
+        int id PK
+        string name
+        string avatar
+        string role
+        int products
+        int sales
+        decimal rating "0-5"
+    }
+
+    PRODUCT {
+        int id PK
+        string name
+        int category_id FK
+        int designer_id FK
+        string type "free / pro"
+        string badge
+        int downloads
+        decimal rating "0-5"
+        int price "VNĐ"
+        string price_display
+        string description
+        int count
+        string format
+        string color
+        boolean is_new
+        boolean is_featured
+        datetime created_at
+    }
+
+    PRICING_PLAN {
+        string id PK "free / pro / team"
+        string name
+        string tagline
+        boolean popular
+        int monthly_price "VNĐ"
+        int yearly_price "VNĐ"
+    }
+
+    PRICING_FEATURE {
+        int id PK
+        string plan_id FK
+        string text
+        boolean included
+        boolean highlight
+    }
+
+    ORDER {
+        int id PK
+        uuid user_id FK "nullable"
+        string customer_name
+        string customer_email
+        string customer_phone
+        string customer_address
+        string note
+        string payment_method
+        string status
+        int total "VNĐ"
+        datetime created_at
+    }
+
+    ORDER_ITEM {
+        int id PK
+        int order_id FK
+        int product_id FK "nullable"
+        string product_name
+        int quantity
+        int price "VNĐ"
+    }
+
+    TESTIMONIAL {
+        int id PK
+        string name
+        string avatar
+        string role
+        int stars "1-5"
+        string text
+    }
+
+    SITE_STATS {
+        int id PK "luôn = 1"
+        int total_products
+        int total_designers
+        int total_downloads
+    }
+
+    PROFILE ||--|| USER : "extends"
+    CATEGORY ||--o{ PRODUCT : "has"
+    DESIGNER ||--o{ PRODUCT : "creates"
+    PRODUCT ||--o{ ORDER_ITEM : "included_in"
+    ORDER ||--|{ ORDER_ITEM : "contains"
+    PRICING_PLAN ||--|{ PRICING_FEATURE : "offers"
+    USER ||--o{ ORDER : "places"

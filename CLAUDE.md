@@ -9,8 +9,9 @@ DesignHub Marketplace — a full-stack design asset marketplace (icons, UI kits,
 ## Commands
 
 ```bash
-# Install all dependencies (root + client)
+# Install all dependencies (root + client — server must be installed separately)
 npm run install-all
+cd server && npm install   # required separately; install-all skips server/
 
 # Development (both server on :5000 and client on :3000)
 npm run dev
@@ -31,7 +32,7 @@ cd server && node seed.js
 cd client && npm run lint
 ```
 
-There is no test setup. No TypeScript — pure JavaScript throughout. Server uses CommonJS (`require`), client uses ES modules (`import`).
+There is no test setup. No TypeScript — pure JavaScript throughout. Server uses CommonJS (`require`), client uses ES modules (`import`). `nodemon` is in root devDependencies but not wired to any script.
 
 ## Supabase Setup
 
@@ -44,6 +45,7 @@ Required env vars in `server/.env`:
 ```
 SUPABASE_URL=https://xxxx.supabase.co
 SUPABASE_SERVICE_KEY=eyJ...
+PORT=5000
 ```
 
 ## Architecture
@@ -52,7 +54,7 @@ SUPABASE_SERVICE_KEY=eyJ...
 
 ### Backend (`server/`)
 
-- **Express.js 5** (server's own `package.json`) on port 5000 (configured via `.env`). Note: root `package.json` has a stale Express 4 dependency that is not used at runtime.
+- **Express.js 5** (server's own `package.json`) on port 5000 (overridable via `PORT` env var). Note: root `package.json` has a stale Express 4 dependency that is not used at runtime.
 - **Supabase** for database and authentication
   - Client initialized in `server/config/supabase.js` using the service_role key (bypasses RLS for server-side queries)
   - Auth uses `supabase.auth.signUp` / `signInWithPassword`; user profiles stored in `profiles` table
@@ -82,7 +84,7 @@ SUPABASE_SERVICE_KEY=eyJ...
 - Toast notifications via `client/src/hooks/useToast.jsx`
 - Components are co-located with their CSS (e.g., `Header.jsx` + `Header.css`)
 - Global UI state lives in `App.jsx` (user, auth modal, cart drawer, toasts) and is passed down via props — no context providers or state management library
-- Dependencies: `lucide-react` (icons), `react-router-dom` (routing), `zod` (available for validation)
+- Dependencies: `lucide-react` (icons), `react-router-dom` (routing)
 
 ### Production serving
 

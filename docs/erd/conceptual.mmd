@@ -1,0 +1,15 @@
+erDiagram
+    USER ||--o{ ORDER : "đặt"
+    USER ||--|| PROFILE : "có"
+
+    CATEGORY ||--o{ PRODUCT : "chứa"
+    DESIGNER ||--o{ PRODUCT : "tạo"
+
+    PRODUCT ||--o{ ORDER_ITEM : "được mua"
+
+    ORDER ||--|{ ORDER_ITEM : "gồm"
+
+    PRICING_PLAN ||--|{ PRICING_FEATURE : "bao gồm"
+
+    TESTIMONIAL
+    SITE_STATS

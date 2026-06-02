@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCategories } from '../services/api';
+import { getCategories } from '../../services/api';
 import './Categories.css';
 
 export default function Categories({ showToast }) {

@@ -1,0 +1,108 @@
+erDiagram
+    categories {
+        serial id PK
+        text name "NOT NULL"
+        text icon "NOT NULL"
+        integer count "DEFAULT 0"
+        text slug "NOT NULL UNIQUE"
+    }
+
+    designers {
+        serial id PK
+        text name "NOT NULL"
+        text avatar "NOT NULL"
+        text role "NOT NULL"
+        integer products "DEFAULT 0"
+        integer sales "DEFAULT 0"
+        numeric_2_1 rating "DEFAULT 0"
+    }
+
+    products {
+        serial id PK
+        text name "NOT NULL"
+        integer category_id FK "ON DELETE SET NULL"
+        integer designer_id FK "ON DELETE SET NULL"
+        text type "NOT NULL CHECK in free pro"
+        text badge "NOT NULL"
+        integer downloads "DEFAULT 0"
+        numeric_2_1 rating "DEFAULT 0"
+        integer price "DEFAULT 0"
+        text price_display "NOT NULL"
+        text description
+        integer count "DEFAULT 0"
+        text format
+        text color
+        boolean is_new "DEFAULT false"
+        boolean is_featured "DEFAULT false"
+        timestamptz created_at "DEFAULT now"
+    }
+
+    pricing_plans {
+        text id PK
+        text name "NOT NULL"
+        text tagline
+        boolean popular "DEFAULT false"
+        integer monthly_price "DEFAULT 0"
+        integer yearly_price "DEFAULT 0"
+    }
+
+    pricing_features {
+        serial id PK
+        text plan_id FK "ON DELETE CASCADE"
+        text text "NOT NULL"
+        boolean included "DEFAULT true"
+        boolean highlight "DEFAULT false"
+    }
+
+    testimonials {
+        serial id PK
+        text name "NOT NULL"
+        text avatar "NOT NULL"
+        text role "NOT NULL"
+        integer stars "DEFAULT 5 CHECK 1 to 5"
+        text text "NOT NULL"
+    }
+
+    site_stats {
+        integer id PK "DEFAULT 1 CHECK 1"
+        integer total_products "DEFAULT 0"
+        integer total_designers "DEFAULT 0"
+        integer total_downloads "DEFAULT 0"
+    }
+
+    profiles {
+        uuid id PK "FK auth.users CASCADE"
+        text name "NOT NULL"
+        text email "NOT NULL"
+        text role "DEFAULT user CHECK user designer"
+        timestamptz created_at "DEFAULT now"
+    }
+
+    orders {
+        serial id PK
+        uuid user_id FK "ON DELETE SET NULL"
+        text customer_name "NOT NULL"
+        text customer_email "NOT NULL"
+        text customer_phone "NOT NULL"
+        text customer_address
+        text note
+        text payment_method "NOT NULL DEFAULT cod"
+        text status "NOT NULL DEFAULT pending"
+        integer total "NOT NULL DEFAULT 0"
+        timestamptz created_at "DEFAULT now"
+    }
+
+    order_items {
+        serial id PK
+        integer order_id FK "ON DELETE CASCADE"
+        integer product_id FK "ON DELETE SET NULL"
+        text product_name "NOT NULL"
+        integer quantity "NOT NULL DEFAULT 1"
+        integer price "NOT NULL DEFAULT 0"
+    }
+
+    categories ||--o{ products : "category_id"
+    designers ||--o{ products : "designer_id"
+    pricing_plans ||--|{ pricing_features : "plan_id CASCADE"
+    orders ||--|{ order_items : "order_id CASCADE"
+    products ||--o{ order_items : "product_id SET NULL"

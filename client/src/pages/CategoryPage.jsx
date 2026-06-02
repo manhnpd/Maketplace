@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
 import { getProducts, getCategories } from '../services/api';
-import ProductCard, { ProductPreview } from './ProductCard';
+import ProductCard, { ProductPreview } from '../components/ProductCard';
 import './CategoryPage.css';
-import './ProductGrid.css';
+import '../components/sections/ProductGrid.css';
 
 export default function CategoryPage({ showToast, cart }) {
   const { slug } = useParams();

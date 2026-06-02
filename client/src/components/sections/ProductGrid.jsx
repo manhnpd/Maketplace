@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ShoppingCart } from 'lucide-react';
-import { getProducts } from '../services/api';
-import ProductCard, { ProductPreview } from './ProductCard';
+import { getProducts } from '../../services/api';
+import ProductCard, { ProductPreview } from '../ProductCard';
 import './ProductGrid.css';
 
 export default function ProductGrid({ showToast, cart }) {
