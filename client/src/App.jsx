@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import CategoryPage from './pages/CategoryPage';
@@ -40,6 +40,7 @@ function App() {
   const { toasts, showToast } = useToast();
   const cart = useCart();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Scroll to top on route change
   useEffect(() => {
@@ -54,6 +55,12 @@ function App() {
 
   const handleAuthSuccess = (userData) => {
     setUser(userData);
+    // Auto redirect theo role
+    if (userData.role === 'admin') {
+      navigate('/admin');
+    } else if (userData.role === 'designer') {
+      navigate('/designer');
+    }
   };
 
   useEffect(() => {
