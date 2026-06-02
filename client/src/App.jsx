@@ -18,6 +18,11 @@ import AdminOrders from './pages/admin/AdminOrders';
 import AdminDesigners from './pages/admin/AdminDesigners';
 import DesignerLayout from './pages/designer/DesignerLayout';
 import DesignerDashboard from './pages/designer/DesignerDashboard';
+import DesignerProducts from './pages/designer/DesignerProducts';
+import DesignerOrders from './pages/designer/DesignerOrders';
+import DesignerAnalytics from './pages/designer/DesignerAnalytics';
+import DesignerSettings from './pages/designer/DesignerSettings';
+import DesignerPublicProfile from './pages/DesignerPublicProfile';
 import AuthModal from './components/AuthModal';
 import CartDrawer from './components/CartDrawer';
 import CTA from './components/CTA';
@@ -127,10 +132,15 @@ function App() {
             <Route path="designer" element={<AdminDesigners showToast={showToast} user={user} />} />
           </Route>
           {/* Designer routes */}
-          <Route path="/designer" element={<DesignerLayout user={user} onLogout={handleLogout} />}>
+          <Route path="/designer" element={<DesignerLayout user={user} onLogout={handleLogout} showToast={showToast} />}>
             <Route index element={<DesignerDashboard showToast={showToast} user={user} />} />
-            <Route path="san-pham" element={<DesignerDashboard showToast={showToast} user={user} />} />
+            <Route path="san-pham" element={<DesignerProducts showToast={showToast} user={user} />} />
+            <Route path="don-hang" element={<DesignerOrders showToast={showToast} user={user} />} />
+            <Route path="thong-ke" element={<DesignerAnalytics showToast={showToast} user={user} />} />
+            <Route path="cai-dat" element={<DesignerSettings showToast={showToast} user={user} />} />
           </Route>
+          {/* Public designer profile */}
+          <Route path="/designer/:id" element={<DesignerPublicProfile showToast={showToast} />} />
         </Routes>
       </main>
 

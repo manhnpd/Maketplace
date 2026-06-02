@@ -84,11 +84,14 @@ const adminUpdateOrder = async (req, res) => {
 
 // GET /api/admin/designer-applications
 const adminGetApplications = async (req, res) => {
-  const { status } = req.query;
-  let query = supabase.from('designer_applications').select('*').order('created_at', { ascending: false });
-  if (status) query = query.eq('status', status);
+  const { status, page: pageStr, limit: limitStr } = req.query;
+  const { page, limit, from, to } = parsePagination({ page: pageStr, limit: limitStr });
 
-  const { data, error } = await query;
+  let query = supabase.from('designer_applications').select('*', { count: 'exact' }).order('created_at', { ascending: false });
+  if (status) query = query.eq('status', status);
+  query = query.range(from, to);
+
+  const { data, error, count } = await query;
   if (error) return res.status(500).json({ success: false, message: error.message });
 
   const result = (data || []).map(a => ({
@@ -105,7 +108,7 @@ const adminGetApplications = async (req, res) => {
     reviewedAt: a.reviewed_at,
   }));
 
-  res.json({ success: true, data: result });
+  res.json(paginateResponse(result, count, page, limit));
 };
 
 // PUT /api/admin/designer-applications/:id

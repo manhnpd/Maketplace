@@ -85,7 +85,7 @@ create table profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   name text not null,
   email text not null,
-  role text default 'user' check (role in ('user', 'designer')),
+  role text default 'user' check (role in ('user', 'designer', 'admin')),
   created_at timestamptz default now()
 );
 
@@ -218,3 +218,17 @@ create policy "Service role full access wishlists" on wishlists for all to servi
 
 create policy "Users read own orders" on orders for select to authenticated using (auth.uid() = user_id);
 create policy "Service role full access orders" on orders for all to service_role using (true) with check (true);
+
+-- ============================================
+-- Mở rộng bảng designers cho Designer Dashboard
+-- ============================================
+
+ALTER TABLE designers ADD COLUMN IF NOT EXISTS bio text DEFAULT '';
+ALTER TABLE designers ADD COLUMN IF NOT EXISTS portfolio_url text DEFAULT '';
+ALTER TABLE designers ADD COLUMN IF NOT EXISTS social_links jsonb DEFAULT '{}'::jsonb;
+ALTER TABLE designers ADD COLUMN IF NOT EXISTS specialties text[] DEFAULT '{}';
+ALTER TABLE designers ADD COLUMN IF NOT EXISTS slug text UNIQUE;
+ALTER TABLE designers ADD COLUMN IF NOT EXISTS user_id uuid REFERENCES auth.users(id) ON DELETE SET NULL;
+
+-- Cho phép service_role ghi designers (để designer tự cập nhật profile)
+CREATE POLICY "Service role full access designers" ON designers FOR ALL TO service_role USING (true) WITH CHECK (true);

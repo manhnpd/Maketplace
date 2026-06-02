@@ -75,4 +75,55 @@ const getStats = async (req, res) => {
   });
 };
 
-module.exports = { getPricing, getDesigners, getTestimonials, getStats };
+// GET /api/designers/:id — public designer profile
+const getDesignerProfile = async (req, res) => {
+  const { data: designer, error } = await supabase
+    .from('designers')
+    .select('*')
+    .eq('id', parseInt(req.params.id))
+    .single();
+
+  if (error || !designer) {
+    return res.status(404).json({ success: false, message: 'Không tìm thấy designer' });
+  }
+
+  const { data: products } = await supabase
+    .from('products')
+    .select('*, categories(name)')
+    .eq('designer_id', designer.id);
+
+  res.json({
+    success: true,
+    data: {
+      id: designer.id,
+      name: designer.name,
+      avatar: designer.avatar,
+      role: designer.role,
+      bio: designer.bio || '',
+      portfolioUrl: designer.portfolio_url || '',
+      socialLinks: designer.social_links || {},
+      specialties: designer.specialties || [],
+      slug: designer.slug || '',
+      products: designer.products || 0,
+      sales: designer.sales || 0,
+      rating: Number(designer.rating) || 0,
+      productList: (products || []).map(p => ({
+        id: p.id,
+        name: p.name,
+        category: p.categories?.name || '',
+        type: p.type,
+        badge: p.badge,
+        price: p.price,
+        priceDisplay: p.price_display,
+        downloads: p.downloads,
+        rating: Number(p.rating),
+        color: p.color || '#22C55E',
+        format: p.format || '',
+        isNew: p.is_new,
+        isFeatured: p.is_featured,
+      })),
+    },
+  });
+};
+
+module.exports = { getPricing, getDesigners, getTestimonials, getStats, getDesignerProfile };

@@ -1,4 +1,8 @@
-const supabase = require('../config/supabase');
+const { createClient } = require('@supabase/supabase-js');
+require('dotenv').config();
+
+// Tạo client riêng cho auth verification — không ảnh hưởng service_role client chính
+const authClient = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
 // Yêu cầu đăng nhập — verify JWT token
 const requireAuth = async (req, res, next) => {
@@ -8,13 +12,14 @@ const requireAuth = async (req, res, next) => {
   }
 
   const token = authHeader.split(' ')[1];
-  const { data: { user }, error } = await supabase.auth.getUser(token);
+  const { data: { user }, error } = await authClient.auth.getUser(token);
 
   if (error || !user) {
     return res.status(401).json({ success: false, message: 'Token không hợp lệ hoặc đã hết hạn' });
   }
 
-  // Lấy profile để có role
+  // Dùng authClient riêng để không ảnh hưởng service_role client
+  const supabase = require('../config/supabase');
   const { data: profile } = await supabase
     .from('profiles')
     .select('*')
@@ -41,13 +46,24 @@ const requireAdmin = async (req, res, next) => {
   });
 };
 
+// Yêu cầu role designer
+const requireDesigner = async (req, res, next) => {
+  await requireAuth(req, res, () => {
+    if (req.user.role !== 'designer') {
+      return res.status(403).json({ success: false, message: 'Bạn không có quyền designer' });
+    }
+    next();
+  });
+};
+
 // Attach user nếu có token, không block nếu không
 const optionalAuth = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (authHeader && authHeader.startsWith('Bearer ')) {
     const token = authHeader.split(' ')[1];
-    const { data: { user } } = await supabase.auth.getUser(token);
+    const { data: { user } } = await authClient.auth.getUser(token);
     if (user) {
+      const supabase = require('../config/supabase');
       const { data: profile } = await supabase
         .from('profiles')
         .select('*')
@@ -65,4 +81,4 @@ const optionalAuth = async (req, res, next) => {
   next();
 };
 
-module.exports = { requireAuth, requireAdmin, optionalAuth };
+module.exports = { requireAuth, requireAdmin, requireDesigner, optionalAuth };

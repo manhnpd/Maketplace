@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, LogOut, PenTool, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingCart, BarChart3, Settings, LogOut, PenTool, Menu, X } from 'lucide-react';
 import { clearAuth } from '../../services/api';
 import './DesignerLayout.css';
 
 const NAV_ITEMS = [
-  { to: '/designer/quan-ly', icon: LayoutDashboard, label: 'Dashboard', end: true },
-  { to: '/designer/san-pham', icon: Package, label: 'San pham' },
+  { to: '/designer', icon: LayoutDashboard, label: 'Dashboard', end: true },
+  { to: '/designer/san-pham', icon: Package, label: 'Sản phẩm' },
+  { to: '/designer/don-hang', icon: ShoppingCart, label: 'Đơn hàng' },
+  { to: '/designer/thong-ke', icon: BarChart3, label: 'Thống kê' },
+  { to: '/designer/cai-dat', icon: Settings, label: 'Cài đặt' },
 ];
 
-export default function DesignerLayout({ user, showToast }) {
+export default function DesignerLayout({ user, showToast, onLogout }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -21,7 +24,8 @@ export default function DesignerLayout({ user, showToast }) {
 
   const handleLogout = () => {
     clearAuth();
-    showToast('👋', 'Da dang xuat. Hen gap lai!');
+    if (onLogout) onLogout();
+    else showToast('👋', 'Đã đăng xuất. Hẹn gặp lại!');
     navigate('/');
   };
 
@@ -29,16 +33,15 @@ export default function DesignerLayout({ user, showToast }) {
     return (
       <div className="designer-no-access">
         <div className="designer-no-access-icon">🔒</div>
-        <h2>Khong co quyen truy cap</h2>
-        <p>Ban can quyen designer de truy cap trang nay.</p>
-        <Link to="/" className="btn btn-primary btn-lg">Quay ve trang chu</Link>
+        <h2>Không có quyền truy cập</h2>
+        <p>Bạn cần quyền designer để truy cập trang này.</p>
+        <Link to="/" className="btn btn-primary btn-lg">Quay về trang chủ</Link>
       </div>
     );
   }
 
   return (
     <div className="designer-layout">
-      {/* Hamburger */}
       <button
         className="designer-hamburger"
         onClick={() => setSidebarOpen(prev => !prev)}
@@ -47,13 +50,11 @@ export default function DesignerLayout({ user, showToast }) {
         {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
 
-      {/* Overlay */}
       <div
         className={`designer-overlay ${sidebarOpen ? 'open' : ''}`}
         onClick={() => setSidebarOpen(false)}
       />
 
-      {/* Sidebar */}
       <aside className={`designer-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="designer-sidebar-logo">
           <div className="designer-sidebar-logo-icon">
@@ -79,12 +80,11 @@ export default function DesignerLayout({ user, showToast }) {
         <div className="designer-sidebar-footer">
           <button className="designer-sidebar-link designer-sidebar-link--logout" onClick={handleLogout}>
             <LogOut size={20} />
-            Dang xuat
+            Đăng xuất
           </button>
         </div>
       </aside>
 
-      {/* Main */}
       <main className="designer-main">
         <Outlet />
       </main>

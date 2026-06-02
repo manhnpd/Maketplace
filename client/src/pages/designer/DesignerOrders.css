@@ -1,0 +1,157 @@
+/* ========================================
+   Designer Orders
+   ======================================== */
+
+.designer-orders {
+  max-width: 1200px;
+}
+
+.designer-orders-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.designer-orders-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--gray-900);
+}
+
+.designer-orders-count {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--gray-400);
+}
+
+/* Filter Tabs */
+.designer-orders-filters {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.designer-orders-filter {
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--gray-200);
+  background: var(--white);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.designer-orders-filter:hover {
+  border-color: var(--green-300);
+  color: var(--green-700);
+}
+
+.designer-orders-filter.active {
+  background: var(--green-500);
+  border-color: var(--green-500);
+  color: var(--white);
+}
+
+/* Card */
+.designer-orders-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+/* Table specifics */
+.designer-orders-id {
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.designer-orders-customer {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.designer-orders-customer-name {
+  font-weight: 600;
+  color: var(--gray-900);
+  font-size: 0.88rem;
+}
+
+.designer-orders-customer-email {
+  font-size: 0.78rem;
+  color: var(--gray-400);
+}
+
+.designer-orders-items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.designer-orders-item {
+  font-size: 0.82rem;
+  color: var(--gray-600);
+}
+
+.designer-orders-total {
+  font-weight: 700;
+  color: var(--gray-900);
+  white-space: nowrap;
+}
+
+.designer-orders-date {
+  font-size: 0.82rem;
+  color: var(--gray-500);
+  white-space: nowrap;
+}
+
+/* Status Badges */
+.designer-orders-status {
+  display: inline-flex;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.designer-orders-status--pending {
+  background: #fef9c3;
+  color: #a16207;
+}
+
+.designer-orders-status--processing {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.designer-orders-status--shipped {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+.designer-orders-status--delivered {
+  background: var(--green-100);
+  color: var(--green-800);
+}
+
+.designer-orders-status--cancelled {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .designer-orders-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

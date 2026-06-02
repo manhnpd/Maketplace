@@ -1,0 +1,245 @@
+/* ========================================
+   Designer Settings
+   ======================================== */
+
+.designer-settings {
+  max-width: 1100px;
+}
+
+.designer-settings-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  margin-bottom: 4px;
+}
+
+.designer-settings-subtitle {
+  font-size: 0.9rem;
+  color: var(--gray-400);
+  margin-bottom: 28px;
+}
+
+/* Grid: form + preview */
+.ds-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 28px;
+  align-items: start;
+}
+
+/* Form Card */
+.ds-form-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.ds-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ds-section-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+/* Slug input */
+.ds-slug-input {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.ds-slug-input:focus-within {
+  border-color: var(--green-500);
+  box-shadow: 0 0 0 3px var(--green-100);
+}
+
+.ds-slug-prefix {
+  padding: 10px 12px;
+  background: var(--gray-50);
+  color: var(--gray-400);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-right: 1.5px solid var(--gray-200);
+  white-space: nowrap;
+}
+
+.ds-slug-input input {
+  flex: 1;
+  padding: 10px 12px;
+  border: none;
+  font-family: inherit;
+  font-size: 0.88rem;
+  color: var(--gray-900);
+  outline: none;
+  background: transparent;
+}
+
+/* Save button */
+.ds-save-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  border: none;
+  background: var(--green-500);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  align-self: flex-start;
+}
+
+.ds-save-btn:hover { background: var(--green-600); }
+.ds-save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Preview */
+.ds-preview {
+  position: sticky;
+  top: 32px;
+}
+
+.ds-preview-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+
+.ds-preview-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  text-align: center;
+}
+
+.ds-preview-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--green-100);
+  color: var(--green-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 auto 16px;
+}
+
+.ds-preview-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 4px;
+}
+
+.ds-preview-role {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--gray-400);
+  margin-bottom: 16px;
+}
+
+.ds-preview-stats {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 16px;
+}
+
+.ds-preview-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.ds-preview-stat-value {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--gray-900);
+}
+
+.ds-preview-stat-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--gray-400);
+}
+
+.ds-preview-bio {
+  font-size: 0.85rem;
+  color: var(--gray-600);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.ds-preview-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.ds-preview-tag {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--gray-100);
+  color: var(--gray-600);
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.ds-preview-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid var(--gray-100);
+  padding-top: 16px;
+}
+
+.ds-preview-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--green-600);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.ds-preview-links a:hover { color: var(--green-700); }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .ds-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ds-preview {
+    order: -1;
+  }
+}

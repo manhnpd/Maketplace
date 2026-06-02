@@ -4,16 +4,16 @@ import { adminGetApplications, adminUpdateApplication } from '../../services/api
 import './AdminDesigners.css';
 
 const FILTER_TABS = [
-  { key: 'all', label: 'Tat ca' },
-  { key: 'pending', label: 'Cho duyet' },
-  { key: 'approved', label: 'Da duyet' },
-  { key: 'rejected', label: 'Da tu choi' },
+  { key: 'all', label: 'Tất cả' },
+  { key: 'pending', label: 'Chờ duyệt' },
+  { key: 'approved', label: 'Đã duyệt' },
+  { key: 'rejected', label: 'Đã từ chối' },
 ];
 
 const STATUS_LABELS = {
-  pending: 'Cho duyet',
-  approved: 'Da duyet',
-  rejected: 'Da tu choi',
+  pending: 'Chờ duyệt',
+  approved: 'Đã duyệt',
+  rejected: 'Đã từ chối',
 };
 
 const ITEMS_PER_PAGE = 10;
@@ -39,14 +39,14 @@ export default function AdminDesigners({ showToast }) {
     try {
       const params = {
         limit: ITEMS_PER_PAGE,
-        offset: (page - 1) * ITEMS_PER_PAGE,
+        page,
       };
       if (filter !== 'all') params.status = filter;
       const res = await adminGetApplications(params);
       setApplications(res.data || []);
       setTotal(res.total || 0);
     } catch {
-      showToast('❌', 'Khong the tai danh sach ung vien');
+      showToast('❌', 'Không thể tải danh sách ứng viên');
     } finally {
       setLoading(false);
     }
@@ -61,9 +61,9 @@ export default function AdminDesigners({ showToast }) {
     try {
       const data = { status };
       const note = notes[id];
-      if (note?.trim()) data.note = note.trim();
+      if (note?.trim()) data.adminNote = note.trim();
       await adminUpdateApplication(id, data);
-      showToast('✅', `${status === 'approved' ? 'Duyet' : 'Tu choi'} ung vien thanh cong`);
+      showToast('✅', `${status === 'approved' ? 'Duyệt' : 'Từ chối'} ứng viên thành công`);
       setNotes(prev => {
         const next = { ...prev };
         delete next[id];
@@ -71,7 +71,7 @@ export default function AdminDesigners({ showToast }) {
       });
       fetchApplications();
     } catch {
-      showToast('❌', 'Cap nhat that bai. Vui long thu lai');
+      showToast('❌', 'Cập nhật thất bại. Vui lòng thử lại');
     } finally {
       setUpdatingId(null);
     }
@@ -87,8 +87,8 @@ export default function AdminDesigners({ showToast }) {
     <div className="admin-designers">
       <div className="admin-designers-header">
         <div>
-          <h1 className="admin-designers-title">Ung vien Designer</h1>
-          <span className="admin-designers-count">{total} ung vien</span>
+          <h1 className="admin-designers-title">Ứng viên Designer</h1>
+          <span className="admin-designers-count">{total} ứng viên</span>
         </div>
       </div>
 
@@ -107,11 +107,11 @@ export default function AdminDesigners({ showToast }) {
 
       {/* Application Cards */}
       {loading ? (
-        <div className="admin-loading">Dang tai du lieu...</div>
+        <div className="admin-loading">Đang tải dữ liệu...</div>
       ) : applications.length === 0 ? (
         <div className="admin-empty">
           <div className="admin-empty-icon">👥</div>
-          <p>Khong co ung vien nao</p>
+          <p>Không có ứng viên nào</p>
         </div>
       ) : (
         <>
@@ -122,10 +122,10 @@ export default function AdminDesigners({ showToast }) {
                 <div className="admin-designer-card-top">
                   <div className="admin-designer-info">
                     <div className="admin-designer-avatar">
-                      {getInitials(app.name)}
+                      {getInitials(app.fullName)}
                     </div>
                     <div className="admin-designer-meta">
-                      <div className="admin-designer-name">{app.name || 'Khong ten'}</div>
+                      <div className="admin-designer-name">{app.fullName || 'Không tên'}</div>
                       <div className="admin-designer-contact">
                         {app.email && <span>{app.email}</span>}
                         {app.phone && <span>{app.phone}</span>}
@@ -169,7 +169,7 @@ export default function AdminDesigners({ showToast }) {
                   <div className="admin-designer-note-row">
                     <input
                       className="admin-designer-note-input"
-                      placeholder="Ghi chu (tuy chon)..."
+                      placeholder="Ghi chú (tùy chọn)..."
                       value={notes[app.id] || ''}
                       onChange={e => handleNoteChange(app.id, e.target.value)}
                     />
@@ -179,14 +179,14 @@ export default function AdminDesigners({ showToast }) {
                     disabled={updatingId === app.id}
                     onClick={() => handleUpdateStatus(app.id, 'approved')}
                   >
-                    <Check size={16} /> Duyet
+                    <Check size={16} /> Duyệt
                   </button>
                   <button
                     className="admin-btn-reject"
                     disabled={updatingId === app.id}
                     onClick={() => handleUpdateStatus(app.id, 'rejected')}
                   >
-                    <X size={16} /> Tu choi
+                    <X size={16} /> Từ chối
                   </button>
                 </div>
               </div>

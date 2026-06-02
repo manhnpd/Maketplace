@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { requireAuth, requireAdmin } = require('../middleware/auth');
+const { requireAuth, requireAdmin, requireDesigner } = require('../middleware/auth');
 const { getProducts, getProduct, getCategories } = require('../controllers/productController');
 const { register, login } = require('../controllers/authController');
-const { getPricing, getDesigners, getTestimonials, getStats } = require('../controllers/siteController');
+const { getPricing, getDesigners, getTestimonials, getStats, getDesignerProfile } = require('../controllers/siteController');
 const { createOrder, getOrders, getOrderById, updateOrderStatus } = require('../controllers/orderController');
 const { createApplication } = require('../controllers/designerApplicationController');
 const { createReview, getReviews } = require('../controllers/reviewController');
 const { getWishlist, addToWishlist, removeFromWishlist } = require('../controllers/wishlistController');
 const { getProfile, updateProfile } = require('../controllers/profileController');
 const { adminGetStats, adminGetOrders, adminUpdateOrder, adminGetApplications, adminUpdateApplication, adminGetProducts, adminCreateProduct, adminUpdateProduct, adminDeleteProduct } = require('../controllers/adminController');
-const { designerGetProducts, designerGetStats } = require('../controllers/designerController');
+const { designerGetProducts, designerGetStats, designerCreateProduct, designerUpdateProduct, designerDeleteProduct, designerGetOrders, designerGetAnalytics, designerUpdateProfile } = require('../controllers/designerController');
 
 // Products (public)
 router.get('/products', getProducts);
@@ -60,7 +60,16 @@ router.put('/admin/products/:id', requireAdmin, adminUpdateProduct);
 router.delete('/admin/products/:id', requireAdmin, adminDeleteProduct);
 
 // Designer (auth required + role=designer)
-router.get('/designer/products', requireAuth, designerGetProducts);
-router.get('/designer/stats', requireAuth, designerGetStats);
+router.get('/designer/products', requireDesigner, designerGetProducts);
+router.post('/designer/products', requireDesigner, designerCreateProduct);
+router.put('/designer/products/:id', requireDesigner, designerUpdateProduct);
+router.delete('/designer/products/:id', requireDesigner, designerDeleteProduct);
+router.get('/designer/stats', requireDesigner, designerGetStats);
+router.get('/designer/orders', requireDesigner, designerGetOrders);
+router.get('/designer/analytics', requireDesigner, designerGetAnalytics);
+router.put('/designer/profile', requireDesigner, designerUpdateProfile);
+
+// Public designer profile
+router.get('/designers/:id', getDesignerProfile);
 
 module.exports = router;
