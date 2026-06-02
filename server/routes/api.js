@@ -4,6 +4,7 @@ const { getProducts, getProduct, getCategories } = require('../controllers/produ
 const { register, login } = require('../controllers/authController');
 const { getPricing, getDesigners, getTestimonials, getStats } = require('../controllers/siteController');
 const { createOrder } = require('../controllers/orderController');
+const { createApplication } = require('../controllers/designerApplicationController');
 
 // Products
 router.get('/products', getProducts);
@@ -22,5 +23,8 @@ router.get('/stats', getStats);
 
 // Orders
 router.post('/orders', createOrder);
+
+// Designer Applications
+router.post('/designer-applications', createApplication);
 
 module.exports = router;

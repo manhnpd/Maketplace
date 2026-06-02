@@ -1,0 +1,302 @@
+.designer-register {
+  padding-top: 92px;
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--green-50) 0%, var(--white) 300px);
+}
+
+.designer-register .container {
+  max-width: 720px;
+}
+
+.designer-register-hero {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.designer-register-hero-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+.designer-register-hero h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  margin-bottom: 8px;
+}
+
+.designer-register-hero p {
+  font-size: 1rem;
+  color: var(--gray-500);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Benefits */
+.designer-benefits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.designer-benefit {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.designer-benefit:hover {
+  border-color: var(--green-300);
+  box-shadow: var(--shadow-md);
+}
+
+.designer-benefit-icon {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+
+.designer-benefit strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--gray-800);
+  margin-bottom: 4px;
+}
+
+.designer-benefit span {
+  font-size: 0.8rem;
+  color: var(--gray-400);
+}
+
+/* Form card */
+.designer-register-form {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  margin-bottom: 40px;
+}
+
+.designer-form-section {
+  margin-bottom: 28px;
+}
+
+.designer-form-section:last-child {
+  margin-bottom: 0;
+}
+
+.designer-form-section-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.designer-form-section-title:not(:first-child) {
+  padding-top: 24px;
+  border-top: 1px solid var(--gray-100);
+}
+
+/* Specialty tags */
+.specialty-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.specialty-tag {
+  padding: 8px 16px;
+  border-radius: 100px;
+  border: 1.5px solid var(--gray-200);
+  background: var(--white);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: inherit;
+}
+
+.specialty-tag:hover {
+  border-color: var(--green-300);
+  color: var(--green-600);
+}
+
+.specialty-tag.selected {
+  border-color: var(--green-500);
+  background: var(--green-50);
+  color: var(--green-700);
+  font-weight: 600;
+}
+
+/* Portfolio upload area */
+.portfolio-upload {
+  border: 2px dashed var(--gray-300);
+  border-radius: var(--radius-md);
+  padding: 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 8px;
+}
+
+.portfolio-upload:hover {
+  border-color: var(--green-400);
+  background: var(--green-50);
+}
+
+.portfolio-upload-icon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.portfolio-upload p {
+  font-size: 0.9rem;
+  color: var(--gray-500);
+  margin-bottom: 4px;
+}
+
+.portfolio-upload span {
+  font-size: 0.8rem;
+  color: var(--gray-400);
+}
+
+.portfolio-files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.portfolio-file {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--green-50);
+  border: 1px solid var(--green-200);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--green-700);
+}
+
+.portfolio-file button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--gray-400);
+  font-size: 0.9rem;
+  padding: 0;
+  line-height: 1;
+}
+
+.portfolio-file button:hover {
+  color: var(--red-600);
+}
+
+/* Terms */
+.designer-terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.designer-terms input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--green-500);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.designer-terms label {
+  font-size: 0.85rem;
+  color: var(--gray-500);
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.designer-terms label a {
+  color: var(--green-600);
+  text-decoration: underline;
+}
+
+/* Submit */
+.designer-register-submit {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.designer-register-submit .btn {
+  width: 100%;
+}
+
+.designer-register-note {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--gray-400);
+}
+
+/* Success */
+.designer-register-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.designer-register-success-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.designer-register-success h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  margin-bottom: 8px;
+}
+
+.designer-register-success p {
+  font-size: 0.95rem;
+  color: var(--gray-500);
+  max-width: 420px;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.designer-register-success .btn {
+  min-width: 200px;
+}
+
+@media (max-width: 768px) {
+  .designer-benefits {
+    grid-template-columns: 1fr;
+  }
+
+  .designer-register-form {
+    padding: 20px;
+  }
+
+  .designer-register-hero h1 {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .designer-register {
+    padding-top: 72px;
+  }
+}

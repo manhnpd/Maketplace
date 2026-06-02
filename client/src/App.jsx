@@ -4,6 +4,7 @@ import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import CategoryPage from './pages/CategoryPage';
 import CheckoutPage from './pages/CheckoutPage';
+import DesignerRegisterPage from './pages/DesignerRegisterPage';
 import AuthModal from './components/AuthModal';
 import CartDrawer from './components/CartDrawer';
 import CTA from './components/CTA';
@@ -76,6 +77,9 @@ function App() {
           } />
           <Route path="/thanh-toan" element={
             <CheckoutPage cart={cart} showToast={showToast} />
+          } />
+          <Route path="/dang-ky-designer" element={
+            <DesignerRegisterPage showToast={showToast} />
           } />
         </Routes>
       </main>

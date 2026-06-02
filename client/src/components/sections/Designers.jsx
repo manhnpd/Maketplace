@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import './Designers.css';
 
 export default function Designers() {
+  const navigate = useNavigate();
+
   return (
     <section className="section" id="designers">
       <div className="container">
@@ -36,8 +39,8 @@ export default function Designers() {
               </div>
             </div>
             <div className="designers-actions">
-              <button className="btn btn-primary btn-lg">Bắt đầu bán ngay</button>
-              <button className="btn btn-outline btn-lg">Tìm hiểu thêm</button>
+              <button className="btn btn-primary btn-lg" onClick={() => navigate('/dang-ky-designer')}>Bắt đầu bán ngay</button>
+              <button className="btn btn-outline btn-lg" onClick={() => navigate('/dang-ky-designer')}>Tìm hiểu thêm</button>
             </div>
           </div>
           <div className="designers-visual">

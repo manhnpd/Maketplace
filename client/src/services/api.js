@@ -43,6 +43,9 @@ export const getStats = () => api.get('/stats').then(r => r.data);
 // Orders
 export const createOrder = (data) => api.post('/orders', data).then(r => r.data);
 
+// Designer Applications
+export const createDesignerApplication = (data) => api.post('/designer-applications', data).then(r => r.data);
+
 // Auth helpers
 export const saveAuth = (token, user) => {
   localStorage.setItem('token', token);

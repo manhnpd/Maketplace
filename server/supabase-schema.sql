@@ -148,3 +148,27 @@ alter table order_items enable row level security;
 create policy "Users read own orders" on orders for select to authenticated using (auth.uid() = user_id);
 create policy "Service role full access orders" on orders for all to service_role using (true) with check (true);
 create policy "Service role full access order_items" on order_items for all to service_role using (true) with check (true);
+
+-- ============================================
+-- Designer Applications
+-- ============================================
+
+create table designer_applications (
+  id serial primary key,
+  full_name text not null,
+  email text not null,
+  phone text not null,
+  specialties text[] not null default '{}',
+  portfolio_url text,
+  portfolio_files text[] default '{}',
+  bio text,
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected')),
+  admin_note text,
+  created_at timestamptz default now(),
+  reviewed_at timestamptz
+);
+
+alter table designer_applications enable row level security;
+
+create policy "Service role full access designer_applications" on designer_applications for all to service_role using (true) with check (true);
+create policy "Anyone insert designer_applications" on designer_applications for insert to anon, authenticated with check (true);
