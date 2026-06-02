@@ -1,0 +1,241 @@
+/* ========================================
+   Designer Dashboard
+   ======================================== */
+
+.designer-dashboard {
+  max-width: 1100px;
+}
+
+.designer-dashboard-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  margin-bottom: 4px;
+}
+
+.designer-dashboard-subtitle {
+  font-size: 0.9rem;
+  color: var(--gray-400);
+  margin-bottom: 28px;
+}
+
+/* ===== Stat Cards ===== */
+.designer-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.designer-stat-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  transition: var(--transition);
+}
+
+.designer-stat-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.designer-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.designer-stat-icon--products {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.designer-stat-icon--downloads {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.designer-stat-icon--revenue {
+  background: var(--green-100);
+  color: var(--green-700);
+}
+
+.designer-stat-icon--monthly {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.designer-stat-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.designer-stat-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--gray-400);
+  margin-bottom: 2px;
+}
+
+.designer-stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  line-height: 1.2;
+}
+
+/* ===== Products Section ===== */
+.designer-products-section {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+
+.designer-products-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.designer-products-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.designer-products-count {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--gray-400);
+}
+
+.designer-table-wrapper {
+  overflow-x: auto;
+}
+
+.designer-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.designer-table th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--gray-200);
+  white-space: nowrap;
+}
+
+.designer-table td {
+  padding: 12px 14px;
+  color: var(--gray-700);
+  border-bottom: 1px solid var(--gray-100);
+  white-space: nowrap;
+}
+
+.designer-table tr:last-child td {
+  border-bottom: none;
+}
+
+.designer-table tr:hover td {
+  background: var(--gray-50);
+}
+
+.designer-product-name {
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+.designer-product-type {
+  display: inline-flex;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.designer-product-type--free {
+  background: var(--green-100);
+  color: var(--green-800);
+}
+
+.designer-product-type--pro {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.designer-product-price {
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.designer-product-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.designer-product-rating svg {
+  color: #f59e0b;
+  width: 14px;
+  height: 14px;
+}
+
+.designer-product-rating span {
+  font-weight: 600;
+  color: var(--gray-700);
+}
+
+/* ===== Loading / Empty ===== */
+.designer-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+  color: var(--gray-400);
+  font-size: 0.95rem;
+}
+
+.designer-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--gray-400);
+}
+
+.designer-empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
+.designer-empty p {
+  font-size: 0.95rem;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .designer-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .designer-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

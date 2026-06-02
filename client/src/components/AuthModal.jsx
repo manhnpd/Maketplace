@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { login, register, saveAuth } from '../services/api';
 import './AuthModal.css';
 
 export default function AuthModal({ type, onClose, onSwitch, showToast, onAuthSuccess }) {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '', email: '', password: '', role: 'user'
   });
@@ -95,7 +97,7 @@ export default function AuthModal({ type, onClose, onSwitch, showToast, onAuthSu
               <label className="checkbox">
                 <input type="checkbox" /> Ghi nhớ đăng nhập
               </label>
-              <a href="#" className="form-link">Quên mật khẩu?</a>
+              <a href="#" className="form-link" onClick={(e) => { e.preventDefault(); onClose(); navigate('/quen-mat-khau'); }}>Quên mật khẩu?</a>
             </div>
           )}
 

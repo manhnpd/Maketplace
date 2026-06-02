@@ -1,25 +1,52 @@
 const supabase = require('../config/supabase');
+const { parsePagination, paginateResponse } = require('../helpers/pagination');
 
-// GET /api/products — list with filters
+// Map snake_case DB → camelCase
+const mapProduct = (p) => ({
+  id: p.id,
+  name: p.name,
+  category: p.categories?.name || '',
+  categorySlug: p.categories?.slug || '',
+  categoryId: p.category_id,
+  type: p.type,
+  badge: p.badge,
+  downloads: p.downloads,
+  rating: Number(p.rating),
+  price: p.price,
+  priceDisplay: p.price_display,
+  description: p.description,
+  count: p.count,
+  format: p.format,
+  color: p.color,
+  designer: p.designers?.name || '',
+  designerId: p.designer_id,
+  isNew: p.is_new,
+  isFeatured: p.is_featured,
+  createdAt: p.created_at,
+});
+
+// GET /api/products — list with filters, search, pagination
 const getProducts = async (req, res) => {
-  const { filter, search, category } = req.query;
+  const { filter, search, category, sort, page: pageStr, limit: limitStr } = req.query;
+  const { page, limit, from, to } = parsePagination({ page: pageStr, limit: limitStr });
+
   let query = supabase
     .from('products')
-    .select('*, categories(name, slug), designers(name)')
-    .order('id');
+    .select('*, categories(name, slug), designers(name)', { count: 'exact' });
 
+  // Filters
   if (filter === 'free') query = query.eq('type', 'free');
   else if (filter === 'pro') query = query.eq('type', 'pro');
   else if (filter === 'new') query = query.eq('is_new', true);
 
+  // Search
   if (search) {
     const q = search.toLowerCase();
     query = query.or(`name.ilike.%${q}%,description.ilike.%${q}%`);
   }
 
+  // Category filter
   if (category) {
-    // Supabase không hỗ trợ filter trực tiếp trên cột bảng join,
-    // cần lookup category_id trước rồi filter trên bảng chính
     const { data: catData } = await supabase
       .from('categories')
       .select('id')
@@ -30,62 +57,48 @@ const getProducts = async (req, res) => {
     }
   }
 
-  const { data, error } = await query;
+  // Sort
+  switch (sort) {
+    case 'newest':
+      query = query.order('created_at', { ascending: false });
+      break;
+    case 'popular':
+      query = query.order('downloads', { ascending: false });
+      break;
+    case 'price_asc':
+      query = query.order('price', { ascending: true });
+      break;
+    case 'price_desc':
+      query = query.order('price', { ascending: false });
+      break;
+    case 'rating':
+      query = query.order('rating', { ascending: false });
+      break;
+    default:
+      query = query.order('id');
+  }
+
+  // Pagination
+  query = query.range(from, to);
+
+  const { data, error, count } = await query;
   if (error) return res.status(500).json({ success: false, message: error.message });
 
-  // Map snake_case DB columns to camelCase matching the old API contract
-  const result = (data || []).map(p => ({
-    id: p.id,
-    name: p.name,
-    category: p.categories?.name || '',
-    type: p.type,
-    badge: p.badge,
-    downloads: p.downloads,
-    rating: Number(p.rating),
-    price: p.price,
-    priceDisplay: p.price_display,
-    description: p.description,
-    count: p.count,
-    format: p.format,
-    color: p.color,
-    designer: p.designers?.name || '',
-    isNew: p.is_new,
-    isFeatured: p.is_featured,
-  }));
-
-  res.json({ success: true, data: result, total: result.length });
+  const result = (data || []).map(mapProduct);
+  res.json(paginateResponse(result, count, page, limit));
 };
 
 // GET /api/products/:id — single product
 const getProduct = async (req, res) => {
   const { data, error } = await supabase
     .from('products')
-    .select('*, categories(name, slug), designers(name)')
+    .select('*, categories(name, slug), designers(name, avatar, role)')
     .eq('id', parseInt(req.params.id))
     .single();
 
-  if (error || !data) return res.status(404).json({ success: false, message: 'Product not found' });
+  if (error || !data) return res.status(404).json({ success: false, message: 'Không tìm thấy sản phẩm' });
 
-  const product = {
-    id: data.id,
-    name: data.name,
-    category: data.categories?.name || '',
-    type: data.type,
-    badge: data.badge,
-    downloads: data.downloads,
-    rating: Number(data.rating),
-    price: data.price,
-    priceDisplay: data.price_display,
-    description: data.description,
-    count: data.count,
-    format: data.format,
-    color: data.color,
-    designer: data.designers?.name || '',
-    isNew: data.is_new,
-    isFeatured: data.is_featured,
-  };
-
-  res.json({ success: true, data: product });
+  res.json({ success: true, data: mapProduct(data) });
 };
 
 // GET /api/categories

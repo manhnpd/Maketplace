@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { Search, Menu, X, LogOut, ShoppingCart } from 'lucide-react';
+import { Search, Menu, X, LogOut, ShoppingCart, User, Package, Shield, Palette, Heart } from 'lucide-react';
 import './Header.css';
 
 export default function Header({ user, onLoginClick, onRegisterClick, onLogout, cartItemCount, onCartClick }) {
@@ -87,6 +87,7 @@ export default function Header({ user, onLoginClick, onRegisterClick, onLogout, 
                 placeholder="Tìm kiếm sản phẩm..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter' && searchQuery.trim()) { navigate(`/tim-kiem?q=${encodeURIComponent(searchQuery.trim())}`); setSearchQuery(''); } }}
               />
             </div>
 
@@ -104,6 +105,31 @@ export default function Header({ user, onLoginClick, onRegisterClick, onLogout, 
                         <div className="user-email">{user.email}</div>
                       </div>
                     </div>
+                    <div className="user-dropdown-divider" />
+                    <button className="user-dropdown-item" onClick={() => { navigate('/tai-khoan'); setUserMenuOpen(false); }}>
+                      <User size={16} />
+                      Tài khoản
+                    </button>
+                    <button className="user-dropdown-item" onClick={() => { navigate('/don-hang'); setUserMenuOpen(false); }}>
+                      <Package size={16} />
+                      Đơn hàng
+                    </button>
+                    <button className="user-dropdown-item" onClick={() => { navigate('/yeu-thich'); setUserMenuOpen(false); }}>
+                      <Heart size={16} />
+                      Yêu thích
+                    </button>
+                    {user?.role === 'admin' && (
+                      <button className="user-dropdown-item" onClick={() => { navigate('/admin'); setUserMenuOpen(false); }}>
+                        <Shield size={16} />
+                        Quản trị
+                      </button>
+                    )}
+                    {user?.role === 'designer' && (
+                      <button className="user-dropdown-item" onClick={() => { navigate('/designer'); setUserMenuOpen(false); }}>
+                        <Palette size={16} />
+                        Designer Dashboard
+                      </button>
+                    )}
                     <div className="user-dropdown-divider" />
                     <button className="user-dropdown-item" onClick={() => { onLogout(); setUserMenuOpen(false); }}>
                       <LogOut size={16} />

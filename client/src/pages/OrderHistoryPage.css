@@ -1,0 +1,247 @@
+/* ===== Order History Page ===== */
+.order-history-page {
+  padding-top: 20px;
+}
+
+.order-history-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.order-history-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--gray-900);
+}
+
+.order-history-subtitle {
+  font-size: 0.9rem;
+  color: var(--gray-500);
+  margin-top: 4px;
+}
+
+/* Filter bar */
+.order-history-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.order-history-filter-btn {
+  padding: 8px 16px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--gray-500);
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: inherit;
+}
+
+.order-history-filter-btn:hover {
+  border-color: var(--green-300);
+  color: var(--green-600);
+}
+
+.order-history-filter-btn.active {
+  background: var(--green-500);
+  color: var(--white);
+  border-color: var(--green-500);
+}
+
+/* Orders list */
+.order-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Order card */
+.order-history-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.order-history-card:hover {
+  border-color: var(--green-300);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.order-history-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.order-history-card-id {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gray-800);
+}
+
+.order-history-card-date {
+  font-size: 0.82rem;
+  color: var(--gray-400);
+}
+
+.order-history-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.order-history-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.order-history-card-items {
+  font-size: 0.85rem;
+  color: var(--gray-500);
+}
+
+.order-history-card-total {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gray-800);
+  margin-left: auto;
+}
+
+.order-history-card-arrow {
+  color: var(--gray-400);
+  font-size: 1.1rem;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.order-history-card:hover .order-history-card-arrow {
+  color: var(--green-600);
+  transform: translateX(3px);
+}
+
+/* Items preview */
+.order-history-card-preview {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--gray-100);
+}
+
+.order-history-card-preview-item {
+  font-size: 0.8rem;
+  color: var(--gray-500);
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.order-history-card-preview-more {
+  font-size: 0.78rem;
+  color: var(--gray-400);
+  font-style: italic;
+}
+
+/* Login prompt */
+.order-history-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.order-history-login-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.order-history-login h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 8px;
+}
+
+.order-history-login p {
+  font-size: 0.95rem;
+  color: var(--gray-500);
+  margin-bottom: 24px;
+  max-width: 400px;
+}
+
+/* Empty state */
+.order-history-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.order-history-empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
+.order-history-empty p {
+  font-size: 0.95rem;
+  color: var(--gray-500);
+  margin-bottom: 16px;
+}
+
+/* Loading */
+.order-history-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: var(--gray-400);
+  font-size: 0.95rem;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .order-history-card-top {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .order-history-card-bottom {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .order-history-card-meta {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .order-history-card-total {
+    margin-left: 0;
+  }
+
+  .order-history-filter {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+  }
+
+  .order-history-filter-btn {
+    flex-shrink: 0;
+  }
+}

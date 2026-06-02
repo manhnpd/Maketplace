@@ -22,6 +22,15 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('Server Error:', err.message);
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || 'Lỗi server nội bộ',
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`📡 API: http://localhost:${PORT}/api`);

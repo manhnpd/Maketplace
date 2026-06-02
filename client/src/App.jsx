@@ -3,8 +3,21 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import CategoryPage from './pages/CategoryPage';
+import ProductDetailPage from './pages/ProductDetailPage';
 import CheckoutPage from './pages/CheckoutPage';
 import DesignerRegisterPage from './pages/DesignerRegisterPage';
+import SearchPage from './pages/SearchPage';
+import WishlistPage from './pages/WishlistPage';
+import AccountPage from './pages/AccountPage';
+import OrderHistoryPage from './pages/OrderHistoryPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import AdminLayout from './pages/admin/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminProducts from './pages/admin/AdminProducts';
+import AdminOrders from './pages/admin/AdminOrders';
+import AdminDesigners from './pages/admin/AdminDesigners';
+import DesignerLayout from './pages/designer/DesignerLayout';
+import DesignerDashboard from './pages/designer/DesignerDashboard';
 import AuthModal from './components/AuthModal';
 import CartDrawer from './components/CartDrawer';
 import CTA from './components/CTA';
@@ -69,11 +82,14 @@ function App() {
               <Pricing />
               <Designers />
               <Testimonials />
-              <CTA />
+              <CTA onRegisterClick={() => setAuthModal('register')} />
             </>
           } />
           <Route path="/danh-muc/:slug" element={
             <CategoryPage showToast={showToast} cart={cart} />
+          } />
+          <Route path="/san-pham/:id" element={
+            <ProductDetailPage showToast={showToast} cart={cart} user={user} />
           } />
           <Route path="/thanh-toan" element={
             <CheckoutPage cart={cart} showToast={showToast} />
@@ -81,6 +97,33 @@ function App() {
           <Route path="/dang-ky-designer" element={
             <DesignerRegisterPage showToast={showToast} />
           } />
+          <Route path="/tim-kiem" element={
+            <SearchPage showToast={showToast} cart={cart} />
+          } />
+          <Route path="/yeu-thich" element={
+            <WishlistPage showToast={showToast} cart={cart} user={user} onLoginClick={() => setAuthModal('login')} />
+          } />
+          <Route path="/tai-khoan" element={
+            <AccountPage showToast={showToast} user={user} onLoginClick={() => setAuthModal('login')} />
+          } />
+          <Route path="/don-hang" element={
+            <OrderHistoryPage showToast={showToast} user={user} onLoginClick={() => setAuthModal('login')} />
+          } />
+          <Route path="/quen-mat-khau" element={
+            <ForgotPasswordPage showToast={showToast} />
+          } />
+          {/* Admin routes */}
+          <Route path="/admin" element={<AdminLayout user={user} onLogout={handleLogout} />}>
+            <Route index element={<AdminDashboard showToast={showToast} user={user} />} />
+            <Route path="san-pham" element={<AdminProducts showToast={showToast} user={user} />} />
+            <Route path="don-hang" element={<AdminOrders showToast={showToast} user={user} />} />
+            <Route path="designer" element={<AdminDesigners showToast={showToast} user={user} />} />
+          </Route>
+          {/* Designer routes */}
+          <Route path="/designer" element={<DesignerLayout user={user} onLogout={handleLogout} />}>
+            <Route index element={<DesignerDashboard showToast={showToast} user={user} />} />
+            <Route path="san-pham" element={<DesignerDashboard showToast={showToast} user={user} />} />
+          </Route>
         </Routes>
       </main>
 

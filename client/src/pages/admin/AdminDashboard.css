@@ -1,0 +1,337 @@
+/* ========================================
+   Admin Dashboard
+   ======================================== */
+
+.admin-dashboard {
+  max-width: 1100px;
+}
+
+.admin-dashboard-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  margin-bottom: 4px;
+}
+
+.admin-dashboard-subtitle {
+  font-size: 0.9rem;
+  color: var(--gray-400);
+  margin-bottom: 28px;
+}
+
+/* ===== Stat Cards ===== */
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.admin-stat-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  transition: var(--transition);
+}
+
+.admin-stat-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.admin-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.admin-stat-icon--products {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.admin-stat-icon--orders {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.admin-stat-icon--users {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.admin-stat-icon--revenue {
+  background: var(--green-100);
+  color: var(--green-700);
+}
+
+.admin-stat-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.admin-stat-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--gray-400);
+  margin-bottom: 2px;
+}
+
+.admin-stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  line-height: 1.2;
+}
+
+/* ===== Order Status Badges ===== */
+.admin-order-stats {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.admin-order-stats-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 16px;
+}
+
+.admin-order-stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.admin-order-stat-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.admin-order-stat-badge .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.admin-order-stat-badge--pending {
+  background: #fef9c3;
+  color: #a16207;
+}
+.admin-order-stat-badge--pending .dot { background: #eab308; }
+
+.admin-order-stat-badge--processing {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+.admin-order-stat-badge--processing .dot { background: #3b82f6; }
+
+.admin-order-stat-badge--shipped {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+.admin-order-stat-badge--shipped .dot { background: #8b5cf6; }
+
+.admin-order-stat-badge--delivered {
+  background: var(--green-100);
+  color: var(--green-800);
+}
+.admin-order-stat-badge--delivered .dot { background: var(--green-500); }
+
+.admin-order-stat-badge--cancelled {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+.admin-order-stat-badge--cancelled .dot { background: #ef4444; }
+
+/* ===== Recent Orders ===== */
+.admin-recent-orders {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.admin-recent-orders-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.admin-recent-orders-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gray-900);
+}
+
+.admin-table-wrapper {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--gray-200);
+  white-space: nowrap;
+}
+
+.admin-table td {
+  padding: 12px 14px;
+  color: var(--gray-700);
+  border-bottom: 1px solid var(--gray-100);
+  white-space: nowrap;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table tr:hover td {
+  background: var(--gray-50);
+}
+
+/* Status badges in table */
+.admin-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.admin-status--pending {
+  background: #fef9c3;
+  color: #a16207;
+}
+
+.admin-status--processing {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.admin-status--shipped {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+
+.admin-status--delivered {
+  background: var(--green-100);
+  color: var(--green-800);
+}
+
+.admin-status--cancelled {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ===== Quick Links ===== */
+.admin-quick-links {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+
+.admin-quick-links-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 16px;
+}
+
+.admin-quick-links-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.admin-quick-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  transition: var(--transition);
+}
+
+.admin-quick-link:hover {
+  background: var(--green-50);
+  border-color: var(--green-300);
+  color: var(--green-700);
+}
+
+.admin-quick-link svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* ===== Loading / Empty ===== */
+.admin-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+  color: var(--gray-400);
+  font-size: 0.95rem;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .admin-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .admin-quick-links-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .admin-quick-links-grid {
+    grid-template-columns: 1fr;
+  }
+  .admin-order-stats-row {
+    flex-direction: column;
+  }
+}

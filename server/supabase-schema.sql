@@ -172,3 +172,49 @@ alter table designer_applications enable row level security;
 
 create policy "Service role full access designer_applications" on designer_applications for all to service_role using (true) with check (true);
 create policy "Anyone insert designer_applications" on designer_applications for insert to anon, authenticated with check (true);
+
+-- ============================================
+-- Reviews
+-- ============================================
+
+create table reviews (
+  id serial primary key,
+  product_id integer not null references products(id) on delete cascade,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  rating integer not null check (rating between 1 and 5),
+  comment text default '',
+  created_at timestamptz default now(),
+  unique(product_id, user_id)
+);
+
+alter table reviews enable row level security;
+
+create policy "Public read reviews" on reviews for select to anon, authenticated using (true);
+create policy "Authenticated insert reviews" on reviews for insert to authenticated with check (auth.uid() = user_id);
+create policy "Users update own reviews" on reviews for update to authenticated using (auth.uid() = user_id);
+create policy "Service role full access reviews" on reviews for all to service_role using (true) with check (true);
+
+-- ============================================
+-- Wishlists
+-- ============================================
+
+create table wishlists (
+  id serial primary key,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  product_id integer not null references products(id) on delete cascade,
+  created_at timestamptz default now(),
+  unique(user_id, product_id)
+);
+
+alter table wishlists enable row level security;
+
+create policy "Users read own wishlist" on wishlists for select to authenticated using (auth.uid() = user_id);
+create policy "Users manage own wishlist" on wishlists for all to authenticated using (auth.uid() = user_id) with check (auth.uid() = user_id);
+create policy "Service role full access wishlists" on wishlists for all to service_role using (true) with check (true);
+
+-- ============================================
+-- Policies cho orders (bổ sung cho user đọc đơn của mình)
+-- ============================================
+
+create policy "Users read own orders" on orders for select to authenticated using (auth.uid() = user_id);
+create policy "Service role full access orders" on orders for all to service_role using (true) with check (true);

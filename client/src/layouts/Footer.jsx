@@ -39,19 +39,21 @@ export default function Footer() {
           </div>
           <div className="footer-links">
             <h4>Công ty</h4>
-            {['Về chúng tôi', 'Blog', 'Tuyển dụng', 'Liên hệ'].map(item => (
-              <a key={item} href="#">{item}</a>
-            ))}
+            <Link to="/">Về chúng tôi</Link>
+            <Link to="/dang-ky-designer">Trở thành Designer</Link>
+            <Link to="/tim-kiem">Tìm kiếm sản phẩm</Link>
+            <Link to="/quen-mat-khau">Đặt lại mật khẩu</Link>
           </div>
           <div className="footer-links">
             <h4>Hỗ trợ</h4>
-            {['Trung tâm trợ giúp', 'Giấy phép', 'Điều khoản', 'Bảo mật'].map(item => (
-              <a key={item} href="#">{item}</a>
-            ))}
+            <Link to="/tai-khoan">Tài khoản</Link>
+            <Link to="/don-hang">Đơn hàng</Link>
+            <Link to="/yeu-thich">Yêu thích</Link>
+            <Link to="/">Trang chủ</Link>
           </div>
         </div>
         <div className="footer-bottom">
-          <p>© 2024 DesignHub. All rights reserved.</p>
+          <p>© 2025 DesignHub. All rights reserved.</p>
           <p>Made with 💚 in Vietnam</p>
         </div>
       </div>
