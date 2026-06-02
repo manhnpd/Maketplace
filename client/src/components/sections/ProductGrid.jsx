@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { ShoppingCart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ShoppingCart, Eye } from 'lucide-react';
 import { getProducts } from '../../services/api';
 import ProductCard, { ProductPreview } from '../ProductCard';
 import './ProductGrid.css';
@@ -8,6 +9,7 @@ export default function ProductGrid({ showToast, cart }) {
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState('all');
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getProducts({ filter }).then(res => setProducts(res.data || [])).catch(() => {});
@@ -23,11 +25,12 @@ export default function ProductGrid({ showToast, cart }) {
 
   const handleDownload = (product) => {
     setSelectedProduct(null);
-    if (product.type === 'free') {
-      showToast('✅', `Đã tải "${product.name}" thành công!`);
-    } else {
-      handleAddToCart(product);
-    }
+    showToast('✅', `Đã tải "${product.name}" thành công!`);
+  };
+
+  const handleViewDetail = (product) => {
+    setSelectedProduct(null);
+    navigate(`/san-pham/${product.id}`);
   };
 
   return (
@@ -94,9 +97,14 @@ export default function ProductGrid({ showToast, cart }) {
             </div>
             <div className="pm-actions">
               {selectedProduct.type === 'free' ? (
-                <button className="btn btn-primary btn-lg" onClick={() => handleDownload(selectedProduct)}>
-                  ⬇️ Tải miễn phí
-                </button>
+                <>
+                  <button className="btn btn-primary btn-lg" onClick={() => handleDownload(selectedProduct)}>
+                    ⬇️ Tải miễn phí
+                  </button>
+                  <button className="btn btn-outline btn-lg" onClick={() => handleViewDetail(selectedProduct)}>
+                    <Eye size={18} /> Xem chi tiết
+                  </button>
+                </>
               ) : (
                 <>
                   <button className="btn btn-primary btn-lg" onClick={() => handleAddToCart(selectedProduct)}>
@@ -104,6 +112,9 @@ export default function ProductGrid({ showToast, cart }) {
                   </button>
                   <button className="btn btn-outline btn-lg" onClick={() => handleAddToCart(selectedProduct)}>
                     🛒 Thêm vào giỏ
+                  </button>
+                  <button className="btn btn-outline btn-lg" onClick={() => handleViewDetail(selectedProduct)}>
+                    <Eye size={18} /> Xem chi tiết
                   </button>
                 </>
               )}

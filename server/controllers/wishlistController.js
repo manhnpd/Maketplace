@@ -2,17 +2,27 @@ const supabase = require('../config/supabase');
 
 // GET /api/wishlist
 const getWishlist = async (req, res) => {
-  const { data, error } = await supabase
+  const { data: wishData, error } = await supabase
     .from('wishlists')
-    .select('product_id, created_at, products(*)')
+    .select('product_id, created_at')
     .eq('user_id', req.user.id)
     .order('created_at', { ascending: false });
 
   if (error) return res.status(500).json({ success: false, message: error.message });
 
-  // Map products inside wishlist
-  const result = (data || []).map(w => {
-    const p = w.products;
+  // Lấy thông tin sản phẩm отдельно
+  const productIds = (wishData || []).map(w => w.product_id);
+  let productsMap = {};
+  if (productIds.length) {
+    const { data: products } = await supabase
+      .from('products')
+      .select('*')
+      .in('id', productIds);
+    (products || []).forEach(p => { productsMap[p.id] = p; });
+  }
+
+  const result = (wishData || []).map(w => {
+    const p = productsMap[w.product_id];
     return {
       productId: w.product_id,
       addedAt: w.created_at,

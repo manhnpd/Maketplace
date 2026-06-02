@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { ShoppingCart } from 'lucide-react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { ShoppingCart, Eye } from 'lucide-react';
 import { getProducts, getCategories } from '../services/api';
 import ProductCard, { ProductPreview } from '../components/ProductCard';
 import './CategoryPage.css';
@@ -8,6 +8,7 @@ import '../components/sections/ProductGrid.css';
 
 export default function CategoryPage({ showToast, cart }) {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState(null);
   const [filter, setFilter] = useState('all');
@@ -41,6 +42,11 @@ export default function CategoryPage({ showToast, cart }) {
     } else {
       handleAddToCart(product);
     }
+  };
+
+  const handleViewDetail = (product) => {
+    setSelectedProduct(null);
+    navigate(`/san-pham/${product.id}`);
   };
 
   return (
@@ -128,9 +134,14 @@ export default function CategoryPage({ showToast, cart }) {
             </div>
             <div className="pm-actions">
               {selectedProduct.type === 'free' ? (
-                <button className="btn btn-primary btn-lg" onClick={() => handleDownload(selectedProduct)}>
-                  ⬇️ Tải miễn phí
-                </button>
+                <>
+                  <button className="btn btn-primary btn-lg" onClick={() => handleDownload(selectedProduct)}>
+                    ⬇️ Tải miễn phí
+                  </button>
+                  <button className="btn btn-outline btn-lg" onClick={() => handleViewDetail(selectedProduct)}>
+                    <Eye size={18} /> Xem chi tiết
+                  </button>
+                </>
               ) : (
                 <>
                   <button className="btn btn-primary btn-lg" onClick={() => handleAddToCart(selectedProduct)}>
@@ -138,6 +149,9 @@ export default function CategoryPage({ showToast, cart }) {
                   </button>
                   <button className="btn btn-outline btn-lg" onClick={() => handleAddToCart(selectedProduct)}>
                     🛒 Thêm vào giỏ
+                  </button>
+                  <button className="btn btn-outline btn-lg" onClick={() => handleViewDetail(selectedProduct)}>
+                    <Eye size={18} /> Xem chi tiết
                   </button>
                 </>
               )}
