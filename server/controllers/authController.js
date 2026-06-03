@@ -1,4 +1,5 @@
 const supabase = require('../config/supabase');
+const User = require('../models/User');
 
 const register = async (req, res) => {
   const { name, email, password, role } = req.body;
@@ -8,10 +9,7 @@ const register = async (req, res) => {
   }
 
   // Create auth user in Supabase
-  const { data: authData, error: authErr } = await supabase.auth.signUp({
-    email,
-    password,
-  });
+  const { data: authData, error: authErr } = await supabase.auth.signUp({ email, password });
 
   if (authErr) {
     const msg = authErr.message.includes('already registered')
@@ -23,7 +21,7 @@ const register = async (req, res) => {
   const userId = authData.user.id;
 
   // Insert profile
-  const { error: profErr } = await supabase.from('profiles').insert({
+  const { error: profErr } = await User.create({
     id: userId,
     name,
     email,
@@ -48,21 +46,14 @@ const login = async (req, res) => {
     return res.status(400).json({ success: false, message: 'Vui lòng nhập email và mật khẩu' });
   }
 
-  const { data: authData, error: authErr } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+  const { data: authData, error: authErr } = await supabase.auth.signInWithPassword({ email, password });
 
   if (authErr) {
     return res.status(401).json({ success: false, message: 'Email hoặc mật khẩu không đúng' });
   }
 
   // Fetch profile
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', authData.user.id)
-    .single();
+  const { data: profile } = await User.findById(authData.user.id);
 
   res.json({
     success: true,

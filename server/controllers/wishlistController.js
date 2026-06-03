@@ -1,23 +1,16 @@
-const supabase = require('../config/supabase');
+const Wishlist = require('../models/Wishlist');
+const Product = require('../models/Product');
+const { mapProductBrief } = require('../utils/formatters');
 
 // GET /api/wishlist
 const getWishlist = async (req, res) => {
-  const { data: wishData, error } = await supabase
-    .from('wishlists')
-    .select('product_id, created_at')
-    .eq('user_id', req.user.id)
-    .order('created_at', { ascending: false });
-
+  const { data: wishData, error } = await Wishlist.findByUser(req.user.id);
   if (error) return res.status(500).json({ success: false, message: error.message });
 
-  // Lấy thông tin sản phẩm отдельно
   const productIds = (wishData || []).map(w => w.product_id);
   let productsMap = {};
   if (productIds.length) {
-    const { data: products } = await supabase
-      .from('products')
-      .select('*')
-      .in('id', productIds);
+    const { data: products } = await Product.findByIds(productIds);
     (products || []).forEach(p => { productsMap[p.id] = p; });
   }
 
@@ -26,22 +19,7 @@ const getWishlist = async (req, res) => {
     return {
       productId: w.product_id,
       addedAt: w.created_at,
-      product: p ? {
-        id: p.id,
-        name: p.name,
-        type: p.type,
-        badge: p.badge,
-        downloads: p.downloads,
-        rating: Number(p.rating),
-        price: p.price,
-        priceDisplay: p.price_display,
-        description: p.description,
-        count: p.count,
-        format: p.format,
-        color: p.color,
-        isNew: p.is_new,
-        isFeatured: p.is_featured,
-      } : null,
+      product: p ? mapProductBrief(p) : null,
     };
   });
 
@@ -53,12 +31,7 @@ const addToWishlist = async (req, res) => {
   const { productId } = req.body;
   if (!productId) return res.status(400).json({ success: false, message: 'Thiếu productId' });
 
-  const { data, error } = await supabase
-    .from('wishlists')
-    .insert({ user_id: req.user.id, product_id: parseInt(productId) })
-    .select()
-    .single();
-
+  const { data, error } = await Wishlist.create(req.user.id, productId);
   if (error) {
     if (error.code === '23505') {
       return res.status(409).json({ success: false, message: 'Sản phẩm đã có trong yêu thích' });
@@ -71,12 +44,7 @@ const addToWishlist = async (req, res) => {
 
 // DELETE /api/wishlist/:productId
 const removeFromWishlist = async (req, res) => {
-  const { error } = await supabase
-    .from('wishlists')
-    .delete()
-    .eq('user_id', req.user.id)
-    .eq('product_id', parseInt(req.params.productId));
-
+  const { error } = await Wishlist.remove(req.user.id, req.params.productId);
   if (error) return res.status(500).json({ success: false, message: error.message });
 
   res.json({ success: true, message: 'Đã xóa khỏi yêu thích' });

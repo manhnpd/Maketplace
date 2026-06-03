@@ -1,23 +1,25 @@
-const supabase = require('../config/supabase');
+const Product = require('../models/Product');
+const Order = require('../models/Order');
+const User = require('../models/User');
+const DesignerApplication = require('../models/DesignerApplication');
 const { parsePagination, paginateResponse } = require('../helpers/pagination');
+const { mapOrderBrief, mapApplication, mapProduct } = require('../utils/formatters');
+const { ORDER_STATUSES } = require('../utils/constants');
 
 // GET /api/admin/stats
 const adminGetStats = async (req, res) => {
   const [products, orders, users, applications] = await Promise.all([
-    supabase.from('products').select('id', { count: 'exact', head: true }),
-    supabase.from('orders').select('id, total, status'),
-    supabase.from('profiles').select('id', { count: 'exact', head: true }),
-    supabase.from('designer_applications').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
+    Product.count(),
+    Order.findAllForStats(),
+    User.count(),
+    DesignerApplication.countPending(),
   ]);
 
   const totalRevenue = (orders.data || []).reduce((sum, o) => sum + (o.total || 0), 0);
-  const orderStats = {
-    pending: (orders.data || []).filter(o => o.status === 'pending').length,
-    processing: (orders.data || []).filter(o => o.status === 'processing').length,
-    shipped: (orders.data || []).filter(o => o.status === 'shipped').length,
-    delivered: (orders.data || []).filter(o => o.status === 'delivered').length,
-    cancelled: (orders.data || []).filter(o => o.status === 'cancelled').length,
-  };
+  const orderStats = {};
+  ORDER_STATUSES.forEach(s => {
+    orderStats[s] = (orders.data || []).filter(o => o.status === s).length;
+  });
 
   res.json({
     success: true,
@@ -37,47 +39,20 @@ const adminGetOrders = async (req, res) => {
   const { status, page: pageStr, limit: limitStr } = req.query;
   const { page, limit, from, to } = parsePagination({ page: pageStr, limit: limitStr });
 
-  let query = supabase
-    .from('orders')
-    .select('*, order_items(*)', { count: 'exact' });
-
-  if (status) query = query.eq('status', status);
-  query = query.order('created_at', { ascending: false }).range(from, to);
-
-  const { data, error, count } = await query;
+  const { data, error, count } = await Order.findAll({ status, from, to });
   if (error) return res.status(500).json({ success: false, message: error.message });
 
-  const result = (data || []).map(o => ({
-    id: o.id,
-    customerName: o.customer_name,
-    customerEmail: o.customer_email,
-    customerPhone: o.customer_phone,
-    status: o.status,
-    total: o.total,
-    paymentMethod: o.payment_method,
-    itemsCount: (o.order_items || []).length,
-    createdAt: o.created_at,
-  }));
-
-  res.json(paginateResponse(result, count, page, limit));
+  res.json(paginateResponse((data || []).map(mapOrderBrief), count, page, limit));
 };
 
 // PUT /api/admin/orders/:id
 const adminUpdateOrder = async (req, res) => {
   const { status, note } = req.body;
-  const validStatuses = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
-
   const updates = {};
-  if (status && validStatuses.includes(status)) updates.status = status;
+  if (status && ORDER_STATUSES.includes(status)) updates.status = status;
   if (note !== undefined) updates.note = note;
 
-  const { data, error } = await supabase
-    .from('orders')
-    .update(updates)
-    .eq('id', parseInt(req.params.id))
-    .select()
-    .single();
-
+  const { data, error } = await Order.updateStatus(req.params.id, updates);
   if (error) return res.status(500).json({ success: false, message: error.message });
   res.json({ success: true, data: { id: data.id, status: data.status } });
 };
@@ -87,28 +62,10 @@ const adminGetApplications = async (req, res) => {
   const { status, page: pageStr, limit: limitStr } = req.query;
   const { page, limit, from, to } = parsePagination({ page: pageStr, limit: limitStr });
 
-  let query = supabase.from('designer_applications').select('*', { count: 'exact' }).order('created_at', { ascending: false });
-  if (status) query = query.eq('status', status);
-  query = query.range(from, to);
-
-  const { data, error, count } = await query;
+  const { data, error, count } = await DesignerApplication.findAll({ status, from, to });
   if (error) return res.status(500).json({ success: false, message: error.message });
 
-  const result = (data || []).map(a => ({
-    id: a.id,
-    fullName: a.full_name,
-    email: a.email,
-    phone: a.phone,
-    specialties: a.specialties,
-    portfolioUrl: a.portfolio_url,
-    bio: a.bio,
-    status: a.status,
-    adminNote: a.admin_note,
-    createdAt: a.created_at,
-    reviewedAt: a.reviewed_at,
-  }));
-
-  res.json(paginateResponse(result, count, page, limit));
+  res.json(paginateResponse((data || []).map(mapApplication), count, page, limit));
 };
 
 // PUT /api/admin/designer-applications/:id
@@ -121,24 +78,14 @@ const adminUpdateApplication = async (req, res) => {
   const updates = { status, reviewed_at: new Date().toISOString() };
   if (adminNote) updates.admin_note = adminNote;
 
-  const { data, error } = await supabase
-    .from('designer_applications')
-    .update(updates)
-    .eq('id', parseInt(req.params.id))
-    .select()
-    .single();
-
+  const { data, error } = await DesignerApplication.update(req.params.id, updates);
   if (error) return res.status(500).json({ success: false, message: error.message });
 
-  // Nếu approve → cập nhật role trong profiles (nếu user đã có account)
+  // Nếu approve → cập nhật role trong profiles
   if (status === 'approved' && data.email) {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('email', data.email)
-      .single();
+    const { data: profile } = await User.findByEmail(data.email);
     if (profile) {
-      await supabase.from('profiles').update({ role: 'designer' }).eq('id', profile.id);
+      await User.updateRole(profile.id, 'designer');
     }
   }
 
@@ -150,30 +97,10 @@ const adminGetProducts = async (req, res) => {
   const { page: pageStr, limit: limitStr } = req.query;
   const { page, limit, from, to } = parsePagination({ page: pageStr, limit: limitStr });
 
-  const { data, error, count } = await supabase
-    .from('products')
-    .select('*, categories(name), designers(name)', { count: 'exact' })
-    .order('id')
-    .range(from, to);
-
+  const { data, error, count } = await Product.findAllAdmin({ from, to });
   if (error) return res.status(500).json({ success: false, message: error.message });
 
-  const result = (data || []).map(p => ({
-    id: p.id,
-    name: p.name,
-    category: p.categories?.name || '',
-    type: p.type,
-    badge: p.badge,
-    downloads: p.downloads,
-    rating: Number(p.rating),
-    price: p.price,
-    priceDisplay: p.price_display,
-    designer: p.designers?.name || '',
-    isNew: p.is_new,
-    isFeatured: p.is_featured,
-  }));
-
-  res.json(paginateResponse(result, count, page, limit));
+  res.json(paginateResponse((data || []).map(mapProduct), count, page, limit));
 };
 
 // POST /api/admin/products
@@ -182,25 +109,21 @@ const adminCreateProduct = async (req, res) => {
 
   if (!name || !type) return res.status(400).json({ success: false, message: 'Thiếu tên hoặc loại sản phẩm' });
 
-  const { data, error } = await supabase
-    .from('products')
-    .insert({
-      name,
-      category_id: categoryId || null,
-      designer_id: designerId || null,
-      type,
-      badge: badge || type,
-      price: price || 0,
-      price_display: priceDisplay || (price === 0 ? 'Miễn phí' : price.toLocaleString('vi-VN') + '₫'),
-      description: description || '',
-      count: count || 0,
-      format: format || '',
-      color: color || '#22C55E',
-      is_new: isNew || false,
-      is_featured: isFeatured || false,
-    })
-    .select()
-    .single();
+  const { data, error } = await Product.create({
+    name,
+    category_id: categoryId || null,
+    designer_id: designerId || null,
+    type,
+    badge: badge || type,
+    price: price || 0,
+    price_display: priceDisplay || (price === 0 ? 'Miễn phí' : price.toLocaleString('vi-VN') + '₫'),
+    description: description || '',
+    count: count || 0,
+    format: format || '',
+    color: color || '#22C55E',
+    is_new: isNew || false,
+    is_featured: isFeatured || false,
+  });
 
   if (error) return res.status(500).json({ success: false, message: error.message });
   res.json({ success: true, data: { id: data.id, name: data.name } });
@@ -214,24 +137,14 @@ const adminUpdateProduct = async (req, res) => {
     if (req.body[f] !== undefined) updates[f] = req.body[f];
   }
 
-  const { data, error } = await supabase
-    .from('products')
-    .update(updates)
-    .eq('id', parseInt(req.params.id))
-    .select()
-    .single();
-
+  const { data, error } = await Product.update(req.params.id, updates);
   if (error) return res.status(500).json({ success: false, message: error.message });
   res.json({ success: true, data: { id: data.id, name: data.name } });
 };
 
 // DELETE /api/admin/products/:id
 const adminDeleteProduct = async (req, res) => {
-  const { error } = await supabase
-    .from('products')
-    .delete()
-    .eq('id', parseInt(req.params.id));
-
+  const { error } = await Product.remove(req.params.id);
   if (error) return res.status(500).json({ success: false, message: error.message });
   res.json({ success: true, message: 'Đã xóa sản phẩm' });
 };
