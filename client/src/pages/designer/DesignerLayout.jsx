@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Package, ShoppingCart, BarChart3, Settings, LogOut, PenTool, Menu, X } from 'lucide-react';
-import { clearAuth } from '../../services/api';
+import { useAuthContext } from '../../contexts/AuthContext';
+import { useToastContext } from '../../contexts/ToastContext';
 import './DesignerLayout.css';
 
 const NAV_ITEMS = [
@@ -12,7 +13,9 @@ const NAV_ITEMS = [
   { to: '/designer/cai-dat', icon: Settings, label: 'Cài đặt' },
 ];
 
-export default function DesignerLayout({ user, showToast, onLogout }) {
+export default function DesignerLayout() {
+  const { user, logout } = useAuthContext();
+  const { showToast } = useToastContext();
   const location = useLocation();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -23,9 +26,8 @@ export default function DesignerLayout({ user, showToast, onLogout }) {
   };
 
   const handleLogout = () => {
-    clearAuth();
-    if (onLogout) onLogout();
-    else showToast('👋', 'Đã đăng xuất. Hẹn gặp lại!');
+    logout();
+    showToast('👋', 'Đã đăng xuất. Hẹn gặp lại!');
     navigate('/');
   };
 

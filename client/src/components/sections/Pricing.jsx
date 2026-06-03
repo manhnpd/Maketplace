@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Shield, Star, Users, Check, X } from 'lucide-react';
-import { getPricing } from '../../services/api';
+import { getPricing } from '../../services/siteService';
 import './Pricing.css';
 
 const PLAN_ICONS = {

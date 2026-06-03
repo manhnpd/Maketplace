@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getTestimonials } from '../../services/api';
+import { getTestimonials } from '../../services/siteService';
 import './Testimonials.css';
 
 export default function Testimonials() {

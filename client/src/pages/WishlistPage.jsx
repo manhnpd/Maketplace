@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, LogIn, X } from 'lucide-react';
-import { getWishlist, removeFromWishlist } from '../services/api';
+import { getWishlist, removeFromWishlist } from '../services/wishlistService';
+import { useAuthContext } from '../contexts/AuthContext';
+import { useToastContext } from '../contexts/ToastContext';
+import { useCartContext } from '../contexts/CartContext';
 import ProductCard from '../components/ProductCard';
 import './WishlistPage.css';
 import '../components/sections/ProductGrid.css';
 
-export default function WishlistPage({ showToast, cart, user, onLoginClick }) {
+export default function WishlistPage() {
+  const { user, setAuthModal } = useAuthContext();
+  const { showToast } = useToastContext();
+  const cart = useCartContext();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -58,7 +64,7 @@ export default function WishlistPage({ showToast, cart, user, onLoginClick }) {
             <div className="wishlist-auth-icon">🔒</div>
             <h3>Vui lòng đăng nhập</h3>
             <p>Đăng nhập để xem và quản lý danh sách sản phẩm yêu thích của bạn.</p>
-            <button className="btn-login" onClick={onLoginClick}>
+            <button className="btn-login" onClick={() => setAuthModal('login')}>
               <LogIn size={18} /> Đăng nhập
             </button>
           </div>

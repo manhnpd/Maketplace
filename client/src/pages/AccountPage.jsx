@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { User, Package, ChevronRight, Loader2 } from 'lucide-react';
-import { isLoggedIn, getProfile, updateProfile, getOrders } from '../services/api';
+import { isLoggedIn } from '../services/api';
+import { getProfile, updateProfile } from '../services/profileService';
+import { getOrders } from '../services/orderService';
+import { useAuthContext } from '../contexts/AuthContext';
+import { useToastContext } from '../contexts/ToastContext';
 import './AccountPage.css';
 
 const STATUS_MAP = {
@@ -33,7 +37,9 @@ function getInitials(name) {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
-export default function AccountPage({ showToast, user, onLoginClick }) {
+export default function AccountPage() {
+  const { user, setAuthModal } = useAuthContext();
+  const { showToast } = useToastContext();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('profile');
   const [profile, setProfile] = useState(null);
@@ -76,7 +82,7 @@ export default function AccountPage({ showToast, user, onLoginClick }) {
             <div className="account-login-prompt-icon">🔒</div>
             <h2>Vui lòng đăng nhập</h2>
             <p>Bạn cần đăng nhập để xem thông tin tài khoản và đơn hàng.</p>
-            <button className="btn btn-primary btn-lg" onClick={onLoginClick}>
+            <button className="btn btn-primary btn-lg" onClick={() => setAuthModal('login')}>
               Đăng nhập ngay
             </button>
           </div>

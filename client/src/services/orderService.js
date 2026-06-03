@@ -1,0 +1,5 @@
+import api from './api';
+
+export const createOrder = (data) => api.post('/orders', data).then(r => r.data);
+export const getOrders = (params) => api.get('/orders', { params }).then(r => r.data);
+export const getOrderById = (id) => api.get(`/orders/${id}`).then(r => r.data);

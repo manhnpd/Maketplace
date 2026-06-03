@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Save, Globe, ExternalLink } from 'lucide-react';
-import { designerUpdateProfile, designerGetProducts } from '../../services/api';
+import { designerUpdateProfile, designerGetProducts } from '../../services/designerService';
 import './DesignerSettings.css';
 
 export default function DesignerSettings({ showToast, user }) {

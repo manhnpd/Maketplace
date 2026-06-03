@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Package, Download, DollarSign, TrendingUp, Star } from 'lucide-react';
-import { designerGetAnalytics } from '../../services/api';
+import { designerGetAnalytics } from '../../services/designerService';
 import './DesignerAnalytics.css';
 
 function formatPrice(price) {

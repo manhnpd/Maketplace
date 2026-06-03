@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { adminGetOrders, adminUpdateOrder } from '../../services/api';
+import { adminGetOrders, adminUpdateOrder } from '../../services/adminService';
+import { useToastContext } from '../../contexts/ToastContext';
 import './AdminOrders.css';
 
 const STATUS_TABS = [
@@ -38,7 +39,8 @@ function formatDate(dateStr) {
   return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
-export default function AdminOrders({ showToast }) {
+export default function AdminOrders() {
+  const { showToast } = useToastContext();
   const [orders, setOrders] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);

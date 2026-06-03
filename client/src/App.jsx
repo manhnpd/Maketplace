@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import CategoryPage from './pages/CategoryPage';
@@ -33,40 +33,21 @@ import HowItWorks from './components/sections/HowItWorks';
 import Pricing from './components/sections/Pricing';
 import Designers from './components/sections/Designers';
 import Testimonials from './components/sections/Testimonials';
-import { useToast } from './hooks/useToast';
-import { useCart } from './hooks/useCart';
-import { getStats, getStoredUser, clearAuth } from './services/api';
+import { useAuthContext } from './contexts/AuthContext';
+import { useToastContext } from './contexts/ToastContext';
+import { useCartContext } from './contexts/CartContext';
+import { getStats } from './services/siteService';
 
 function App() {
-  const [authModal, setAuthModal] = useState(null);
-  const [user, setUser] = useState(getStoredUser());
+  const { user, authModal, setAuthModal } = useAuthContext();
+  const { showToast } = useToastContext();
   const [stats, setStats] = useState(null);
   const [cartOpen, setCartOpen] = useState(false);
-  const { toasts, showToast } = useToast();
-  const cart = useCart();
   const location = useLocation();
-  const navigate = useNavigate();
 
-  // Scroll to top on route change
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
-
-  const handleLogout = () => {
-    clearAuth();
-    setUser(null);
-    showToast('👋', 'Đã đăng xuất. Hẹn gặp lại!');
-  };
-
-  const handleAuthSuccess = (userData) => {
-    setUser(userData);
-    // Auto redirect theo role
-    if (userData.role === 'admin') {
-      navigate('/admin');
-    } else if (userData.role === 'designer') {
-      navigate('/designer');
-    }
-  };
 
   useEffect(() => {
     getStats().then(res => setStats(res.data)).catch(() => {});
@@ -74,73 +55,48 @@ function App() {
 
   return (
     <div className="app">
-      <Header
-        user={user}
-        onLoginClick={() => setAuthModal('login')}
-        onRegisterClick={() => setAuthModal('register')}
-        onLogout={handleLogout}
-        cartItemCount={cart.itemCount}
-        onCartClick={() => setCartOpen(true)}
-      />
+      <Header onCartClick={() => setCartOpen(true)} />
 
       <main>
         <Routes>
           <Route path="/" element={
             <>
               <Hero stats={stats} />
-              <ProductGrid showToast={showToast} cart={cart} />
-              <Categories showToast={showToast} />
+              <ProductGrid />
+              <Categories />
               <HowItWorks />
               <Pricing />
               <Designers />
               <Testimonials />
-              <CTA onRegisterClick={() => setAuthModal('register')} />
+              <CTA />
             </>
           } />
-          <Route path="/danh-muc/:slug" element={
-            <CategoryPage showToast={showToast} cart={cart} />
-          } />
-          <Route path="/san-pham/:id" element={
-            <ProductDetailPage showToast={showToast} cart={cart} user={user} />
-          } />
-          <Route path="/thanh-toan" element={
-            <CheckoutPage cart={cart} showToast={showToast} />
-          } />
-          <Route path="/dang-ky-designer" element={
-            <DesignerRegisterPage showToast={showToast} />
-          } />
-          <Route path="/tim-kiem" element={
-            <SearchPage showToast={showToast} cart={cart} />
-          } />
-          <Route path="/yeu-thich" element={
-            <WishlistPage showToast={showToast} cart={cart} user={user} onLoginClick={() => setAuthModal('login')} />
-          } />
-          <Route path="/tai-khoan" element={
-            <AccountPage showToast={showToast} user={user} onLoginClick={() => setAuthModal('login')} />
-          } />
-          <Route path="/don-hang" element={
-            <OrderHistoryPage showToast={showToast} user={user} onLoginClick={() => setAuthModal('login')} />
-          } />
-          <Route path="/quen-mat-khau" element={
-            <ForgotPasswordPage showToast={showToast} />
-          } />
+          <Route path="/danh-muc/:slug" element={<CategoryPage />} />
+          <Route path="/san-pham/:id" element={<ProductDetailPage />} />
+          <Route path="/thanh-toan" element={<CheckoutPage />} />
+          <Route path="/dang-ky-designer" element={<DesignerRegisterPage />} />
+          <Route path="/tim-kiem" element={<SearchPage />} />
+          <Route path="/yeu-thich" element={<WishlistPage />} />
+          <Route path="/tai-khoan" element={<AccountPage />} />
+          <Route path="/don-hang" element={<OrderHistoryPage />} />
+          <Route path="/quen-mat-khau" element={<ForgotPasswordPage />} />
           {/* Admin routes */}
-          <Route path="/admin" element={<AdminLayout user={user} onLogout={handleLogout} />}>
-            <Route index element={<AdminDashboard showToast={showToast} user={user} />} />
-            <Route path="san-pham" element={<AdminProducts showToast={showToast} user={user} />} />
-            <Route path="don-hang" element={<AdminOrders showToast={showToast} user={user} />} />
-            <Route path="designer" element={<AdminDesigners showToast={showToast} user={user} />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="san-pham" element={<AdminProducts />} />
+            <Route path="don-hang" element={<AdminOrders />} />
+            <Route path="designer" element={<AdminDesigners />} />
           </Route>
           {/* Designer routes */}
-          <Route path="/designer" element={<DesignerLayout user={user} onLogout={handleLogout} showToast={showToast} />}>
-            <Route index element={<DesignerDashboard showToast={showToast} user={user} />} />
-            <Route path="san-pham" element={<DesignerProducts showToast={showToast} user={user} />} />
-            <Route path="don-hang" element={<DesignerOrders showToast={showToast} user={user} />} />
-            <Route path="thong-ke" element={<DesignerAnalytics showToast={showToast} user={user} />} />
-            <Route path="cai-dat" element={<DesignerSettings showToast={showToast} user={user} />} />
+          <Route path="/designer" element={<DesignerLayout />}>
+            <Route index element={<DesignerDashboard />} />
+            <Route path="san-pham" element={<DesignerProducts />} />
+            <Route path="don-hang" element={<DesignerOrders />} />
+            <Route path="thong-ke" element={<DesignerAnalytics />} />
+            <Route path="cai-dat" element={<DesignerSettings />} />
           </Route>
           {/* Public designer profile */}
-          <Route path="/designer/:id" element={<DesignerPublicProfile showToast={showToast} />} />
+          <Route path="/designer/:id" element={<DesignerPublicProfile />} />
         </Routes>
       </main>
 
@@ -151,27 +107,13 @@ function App() {
           type={authModal}
           onClose={() => setAuthModal(null)}
           onSwitch={() => setAuthModal(authModal === 'login' ? 'register' : 'login')}
-          showToast={showToast}
-          onAuthSuccess={handleAuthSuccess}
         />
       )}
 
       <CartDrawer
         open={cartOpen}
         onClose={() => setCartOpen(false)}
-        cart={cart}
-        showToast={showToast}
       />
-
-      {/* Toast notifications */}
-      <div className="toast-container">
-        {toasts.map(toast => (
-          <div key={toast.id} className="toast">
-            <span>{toast.icon}</span>
-            <span>{toast.message}</span>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }

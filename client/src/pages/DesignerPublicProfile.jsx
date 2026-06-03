@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Star, Download, Package, Globe, ArrowLeft } from 'lucide-react';
-import { getDesignerProfile } from '../services/api';
+import { getDesignerProfile } from '../services/siteService';
+import { useToastContext } from '../contexts/ToastContext';
 import './DesignerPublicProfile.css';
 
 function formatPrice(price) {
@@ -9,7 +10,8 @@ function formatPrice(price) {
   return price.toLocaleString('vi-VN') + 'đ';
 }
 
-export default function DesignerPublicProfile({ showToast }) {
+export default function DesignerPublicProfile() {
+  const { showToast } = useToastContext();
   const { id } = useParams();
   const [designer, setDesigner] = useState(null);
   const [loading, setLoading] = useState(true);

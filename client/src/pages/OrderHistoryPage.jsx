@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Package, ChevronRight, Loader2 } from 'lucide-react';
-import { isLoggedIn, getOrders } from '../services/api';
+import { isLoggedIn } from '../services/api';
+import { getOrders } from '../services/orderService';
+import { useAuthContext } from '../contexts/AuthContext';
+import { useToastContext } from '../contexts/ToastContext';
 import './OrderHistoryPage.css';
 
 const STATUS_MAP = {
@@ -35,7 +38,9 @@ function formatDate(dateStr) {
   });
 }
 
-export default function OrderHistoryPage({ showToast, user, onLoginClick }) {
+export default function OrderHistoryPage() {
+  const { user, setAuthModal } = useAuthContext();
+  const { showToast } = useToastContext();
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -62,7 +67,7 @@ export default function OrderHistoryPage({ showToast, user, onLoginClick }) {
             <div className="order-history-login-icon">🔒</div>
             <h2>Vui lòng đăng nhập</h2>
             <p>Bạn cần đăng nhập để xem lịch sử đơn hàng.</p>
-            <button className="btn btn-primary btn-lg" onClick={onLoginClick}>
+            <button className="btn btn-primary btn-lg" onClick={() => setAuthModal('login')}>
               Đăng nhập ngay
             </button>
           </div>

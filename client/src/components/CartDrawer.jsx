@@ -1,9 +1,10 @@
 import { X, Plus, Minus, Trash2, ShoppingBag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useCartContext } from '../contexts/CartContext';
 import './CartDrawer.css';
 
-export default function CartDrawer({ open, onClose, cart }) {
-  const { items, removeFromCart, updateQuantity, clearCart, total, itemCount } = cart;
+export default function CartDrawer({ open, onClose }) {
+  const { items, removeFromCart, updateQuantity, clearCart, total, itemCount } = useCartContext();
   const navigate = useNavigate();
 
   const formatPrice = (price) => {

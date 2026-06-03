@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Package, Download, DollarSign, TrendingUp, Star, Plus, ArrowRight } from 'lucide-react';
-import { designerGetStats, designerGetProducts, designerGetOrders } from '../../services/api';
+import { designerGetStats, designerGetProducts, designerGetOrders } from '../../services/designerService';
+import { useToastContext } from '../../contexts/ToastContext';
 import './DesignerDashboard.css';
 
 function formatPrice(price) {

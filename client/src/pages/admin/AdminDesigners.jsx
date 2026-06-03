@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ExternalLink, Check, X } from 'lucide-react';
-import { adminGetApplications, adminUpdateApplication } from '../../services/api';
+import { adminGetApplications, adminUpdateApplication } from '../../services/adminService';
+import { useToastContext } from '../../contexts/ToastContext';
 import './AdminDesigners.css';
 
 const FILTER_TABS = [
@@ -25,7 +26,8 @@ function getInitials(name) {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
-export default function AdminDesigners({ showToast }) {
+export default function AdminDesigners() {
+  const { showToast } = useToastContext();
   const [applications, setApplications] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);

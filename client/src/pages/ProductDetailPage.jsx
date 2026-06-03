@@ -1,12 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Star, Download, User, ArrowLeft, ShoppingCart, Package, FileText, Palette } from 'lucide-react';
-import { getProduct, getReviews, createReview, getProducts } from '../services/api';
+import { getProduct, getProducts } from '../services/productService';
+import { getReviews, createReview } from '../services/reviewService';
+import { useAuthContext } from '../contexts/AuthContext';
+import { useToastContext } from '../contexts/ToastContext';
+import { useCartContext } from '../contexts/CartContext';
 import ProductCard, { ProductPreview } from '../components/ProductCard';
 import './ProductDetailPage.css';
 import '../components/sections/ProductGrid.css';
 
-export default function ProductDetailPage({ showToast, cart, user }) {
+export default function ProductDetailPage() {
+  const { user } = useAuthContext();
+  const { showToast } = useToastContext();
+  const cart = useCartContext();
   const { id } = useParams();
   const navigate = useNavigate();
 

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Package, ShoppingCart, Users, DollarSign, ArrowRight } from 'lucide-react';
-import { adminGetStats, adminGetOrders } from '../../services/api';
+import { adminGetStats, adminGetOrders } from '../../services/adminService';
+import { useToastContext } from '../../contexts/ToastContext';
 import './AdminDashboard.css';
 
 const STATUS_LABELS = {
@@ -23,7 +24,8 @@ function formatDate(dateStr) {
   return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
-export default function AdminDashboard({ showToast }) {
+export default function AdminDashboard() {
+  const { showToast } = useToastContext();
   const [stats, setStats] = useState(null);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCategories } from '../../services/api';
+import { getCategories } from '../../services/productService';
+import { useToastContext } from '../../contexts/ToastContext';
 import './Categories.css';
 
-export default function Categories({ showToast }) {
+export default function Categories() {
+  const { showToast } = useToastContext();
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 

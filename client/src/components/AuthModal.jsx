@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login, register, saveAuth } from '../services/api';
+import { register, login } from '../services/authService';
+import { useToastContext } from '../contexts/ToastContext';
+import { useAuthContext } from '../contexts/AuthContext';
 import './AuthModal.css';
 
-export default function AuthModal({ type, onClose, onSwitch, showToast, onAuthSuccess }) {
+export default function AuthModal({ type, onClose, onSwitch }) {
   const navigate = useNavigate();
+  const { showToast } = useToastContext();
+  const { login: authLogin } = useAuthContext();
   const [formData, setFormData] = useState({
     name: '', email: '', password: '', role: 'user'
   });
@@ -20,8 +24,7 @@ export default function AuthModal({ type, onClose, onSwitch, showToast, onAuthSu
       if (type === 'login') {
         const res = await login({ email: formData.email, password: formData.password });
         if (res.success) {
-          saveAuth(res.token, res.data);
-          onAuthSuccess?.(res.data);
+          authLogin(res.data, res.token);
           onClose();
           showToast('👋', 'Đăng nhập thành công! Chào mừng bạn trở lại.');
         }
@@ -29,8 +32,7 @@ export default function AuthModal({ type, onClose, onSwitch, showToast, onAuthSu
         const res = await register(formData);
         if (res.success) {
           if (res.token) {
-            saveAuth(res.token, res.data);
-            onAuthSuccess?.(res.data);
+            authLogin(res.data, res.token);
           }
           onClose();
           showToast('🎉', 'Đăng ký thành công! Kiểm tra email để xác nhận.');

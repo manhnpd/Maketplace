@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { designerGetOrders } from '../../services/api';
+import { designerGetOrders } from '../../services/designerService';
 import './DesignerOrders.css';
 
 const STATUS_LABELS = {

@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { Search, ArrowLeft, ArrowRight } from 'lucide-react';
-import { getProducts } from '../services/api';
+import { getProducts } from '../services/productService';
+import { useToastContext } from '../contexts/ToastContext';
+import { useCartContext } from '../contexts/CartContext';
 import ProductCard from '../components/ProductCard';
 import './SearchPage.css';
 import '../components/sections/ProductGrid.css';
@@ -18,7 +20,9 @@ const SORT_OPTIONS = [
   { value: 'price', label: 'Giá' },
 ];
 
-export default function SearchPage({ showToast, cart }) {
+export default function SearchPage() {
+  const { showToast } = useToastContext();
+  const cart = useCartContext();
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const query = searchParams.get('q') || '';

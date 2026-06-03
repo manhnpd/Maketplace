@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { createDesignerApplication } from '../services/api';
+import { createDesignerApplication } from '../services/applicationService';
+import { useToastContext } from '../contexts/ToastContext';
 import './DesignerRegisterPage.css';
 
 const SPECIALTIES = [
@@ -20,7 +21,8 @@ const BENEFITS = [
   { icon: '📊', title: 'Thống kê chi tiết', desc: 'Theo dõi doanh thu & lượt tải' },
 ];
 
-export default function DesignerRegisterPage({ showToast }) {
+export default function DesignerRegisterPage() {
+  const { showToast } = useToastContext();
   const navigate = useNavigate();
   const fileRef = useRef(null);
   const [loading, setLoading] = useState(false);

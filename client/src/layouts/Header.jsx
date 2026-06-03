@@ -1,9 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { Search, Menu, X, LogOut, ShoppingCart, User, Package, Shield, Palette, Heart } from 'lucide-react';
+import { useAuthContext } from '../contexts/AuthContext';
+import { useCartContext } from '../contexts/CartContext';
+import { useToastContext } from '../contexts/ToastContext';
 import './Header.css';
 
-export default function Header({ user, onLoginClick, onRegisterClick, onLogout, cartItemCount, onCartClick }) {
+export default function Header({ onCartClick }) {
+  const { user, setAuthModal, logout } = useAuthContext();
+  const cart = useCartContext();
+  const { showToast } = useToastContext();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -131,7 +137,7 @@ export default function Header({ user, onLoginClick, onRegisterClick, onLogout, 
                       </button>
                     )}
                     <div className="user-dropdown-divider" />
-                    <button className="user-dropdown-item" onClick={() => { onLogout(); setUserMenuOpen(false); }}>
+                    <button className="user-dropdown-item" onClick={() => { logout(); showToast('👋', 'Đã đăng xuất. Hẹn gặp lại!'); setUserMenuOpen(false); }}>
                       <LogOut size={16} />
                       Đăng xuất
                     </button>
@@ -140,14 +146,14 @@ export default function Header({ user, onLoginClick, onRegisterClick, onLogout, 
               </div>
             ) : (
               <>
-                <button className="btn btn-outline" onClick={onLoginClick}>Đăng nhập</button>
-                <button className="btn btn-primary" onClick={onRegisterClick}>Đăng ký</button>
+                <button className="btn btn-outline" onClick={() => setAuthModal('login')}>Đăng nhập</button>
+                <button className="btn btn-primary" onClick={() => setAuthModal('register')}>Đăng ký</button>
               </>
             )}
 
             <button className="cart-icon-btn" onClick={onCartClick}>
               <ShoppingCart size={20} />
-              {cartItemCount > 0 && <span className="cart-badge">{cartItemCount}</span>}
+              {cart.itemCount > 0 && <span className="cart-badge">{cart.itemCount}</span>}
             </button>
 
             <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
@@ -175,9 +181,9 @@ export default function Header({ user, onLoginClick, onRegisterClick, onLogout, 
               </div>
               <button className="btn btn-outline btn-full" onClick={() => { onCartClick(); setMenuOpen(false); }}>
                 <ShoppingCart size={16} />
-                Giỏ hàng {cartItemCount > 0 ? `(${cartItemCount})` : ''}
+                Giỏ hàng {cart.itemCount > 0 ? `(${cart.itemCount})` : ''}
               </button>
-              <button className="btn btn-outline btn-full" onClick={() => { onLogout(); setMenuOpen(false); }}>
+              <button className="btn btn-outline btn-full" onClick={() => { logout(); showToast('👋', 'Đã đăng xuất. Hẹn gặp lại!'); setMenuOpen(false); }}>
                 <LogOut size={16} />
                 Đăng xuất
               </button>
@@ -186,10 +192,10 @@ export default function Header({ user, onLoginClick, onRegisterClick, onLogout, 
             <>
               <button className="btn btn-outline btn-full" onClick={() => { onCartClick(); setMenuOpen(false); }}>
                 <ShoppingCart size={16} />
-                Giỏ hàng {cartItemCount > 0 ? `(${cartItemCount})` : ''}
+                Giỏ hàng {cart.itemCount > 0 ? `(${cart.itemCount})` : ''}
               </button>
-              <button className="btn btn-outline btn-full" onClick={() => { onLoginClick(); setMenuOpen(false); }}>Đăng nhập</button>
-              <button className="btn btn-primary btn-full" onClick={() => { onRegisterClick(); setMenuOpen(false); }}>Đăng ký miễn phí</button>
+              <button className="btn btn-outline btn-full" onClick={() => { setAuthModal('login'); setMenuOpen(false); }}>Đăng nhập</button>
+              <button className="btn btn-primary btn-full" onClick={() => { setAuthModal('register'); setMenuOpen(false); }}>Đăng ký miễn phí</button>
             </>
           )}
         </div>

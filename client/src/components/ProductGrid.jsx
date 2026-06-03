@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { ShoppingCart } from 'lucide-react';
-import { getProducts } from '../services/api';
+import { getProducts } from '../services/productService';
 import ProductCard, { ProductPreview } from './ProductCard';
 import './ProductGrid.css';
 

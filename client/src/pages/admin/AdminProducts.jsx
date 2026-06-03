@@ -5,8 +5,9 @@ import {
   adminCreateProduct,
   adminUpdateProduct,
   adminDeleteProduct,
-  getCategories,
-} from '../../services/api';
+} from '../../services/adminService';
+import { getCategories } from '../../services/productService';
+import { useToastContext } from '../../contexts/ToastContext';
 import './AdminProducts.css';
 
 const PRODUCTS_PER_PAGE = 10;
@@ -27,7 +28,8 @@ function formatPrice(price) {
   return price.toLocaleString('vi-VN') + 'd';
 }
 
-export default function AdminProducts({ showToast }) {
+export default function AdminProducts() {
+  const { showToast } = useToastContext();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [total, setTotal] = useState(0);

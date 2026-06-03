@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Mail } from 'lucide-react';
+import { useToastContext } from '../contexts/ToastContext';
 import './ForgotPasswordPage.css';
 
-export default function ForgotPasswordPage({ showToast }) {
+export default function ForgotPasswordPage() {
+  const { showToast } = useToastContext();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);

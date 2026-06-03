@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { createOrder } from '../services/api';
+import { createOrder } from '../services/orderService';
+import { useToastContext } from '../contexts/ToastContext';
+import { useCartContext } from '../contexts/CartContext';
 import './CheckoutPage.css';
 
 const PAYMENT_METHODS = [
@@ -14,7 +16,9 @@ function formatPrice(price) {
   return price.toLocaleString('vi-VN') + '₫';
 }
 
-export default function CheckoutPage({ cart, showToast }) {
+export default function CheckoutPage() {
+  const { showToast } = useToastContext();
+  const cart = useCartContext();
   const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const [loading, setLoading] = useState(false);

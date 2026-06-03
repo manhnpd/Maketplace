@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Eye } from 'lucide-react';
-import { getProducts, getCategories } from '../services/api';
+import { getProducts, getCategories } from '../services/productService';
+import { useToastContext } from '../contexts/ToastContext';
+import { useCartContext } from '../contexts/CartContext';
 import ProductCard, { ProductPreview } from '../components/ProductCard';
 import './CategoryPage.css';
 import '../components/sections/ProductGrid.css';
 
-export default function CategoryPage({ showToast, cart }) {
+export default function CategoryPage() {
+  const { showToast } = useToastContext();
+  const cart = useCartContext();
   const { slug } = useParams();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);

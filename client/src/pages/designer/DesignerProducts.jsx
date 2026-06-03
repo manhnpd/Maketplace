@@ -5,8 +5,8 @@ import {
   designerCreateProduct,
   designerUpdateProduct,
   designerDeleteProduct,
-  getCategories,
-} from '../../services/api';
+} from '../../services/designerService';
+import { getCategories } from '../../services/productService';
 import './DesignerProducts.css';
 
 const PRODUCTS_PER_PAGE = 10;

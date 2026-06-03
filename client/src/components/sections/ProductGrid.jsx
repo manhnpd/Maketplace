@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, Eye } from 'lucide-react';
-import { getProducts } from '../../services/api';
+import { getProducts } from '../../services/productService';
 import ProductCard, { ProductPreview } from '../ProductCard';
+import { useToastContext } from '../../contexts/ToastContext';
+import { useCartContext } from '../../contexts/CartContext';
 import './ProductGrid.css';
 
-export default function ProductGrid({ showToast, cart }) {
+export default function ProductGrid() {
+  const { showToast } = useToastContext();
+  const cart = useCartContext();
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState('all');
   const [selectedProduct, setSelectedProduct] = useState(null);

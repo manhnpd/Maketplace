@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Package, ShoppingCart, Users, LogOut, Menu, X, PenTool } from 'lucide-react';
-import { clearAuth } from '../../services/api';
+import { useAuthContext } from '../../contexts/AuthContext';
+import { useToastContext } from '../../contexts/ToastContext';
 import './AdminLayout.css';
 
 const NAV_ITEMS = [
@@ -11,7 +12,9 @@ const NAV_ITEMS = [
   { to: '/admin/designer', icon: Users, label: 'Designer' },
 ];
 
-export default function AdminLayout({ user, showToast }) {
+export default function AdminLayout() {
+  const { user, logout } = useAuthContext();
+  const { showToast } = useToastContext();
   const location = useLocation();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -22,7 +25,7 @@ export default function AdminLayout({ user, showToast }) {
   };
 
   const handleLogout = () => {
-    clearAuth();
+    logout();
     showToast('👋', 'Da dang xuat. Hen gap lai!');
     navigate('/');
   };
