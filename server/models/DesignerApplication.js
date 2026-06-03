@@ -1,16 +1,16 @@
-const supabase = require('../config/supabase');
+const { supabaseAdmin: db } = require('../config/supabase');
 
 const DesignerApplication = {
   async create(data) {
-    return supabase
-      .from('designer_applications')
-      .insert(data)
-      .select()
-      .single();
+    if (!data.id) {
+      const { data: maxRow } = await db.from('designer_applications').select('id').order('id', { ascending: false }).limit(1);
+      if (maxRow && maxRow.length > 0) data.id = maxRow[0].id + 1;
+    }
+    return db.from('designer_applications').insert(data).select().single();
   },
 
   async findAll({ status, from, to }) {
-    let query = supabase
+    let query = db
       .from('designer_applications')
       .select('*', { count: 'exact' })
       .order('created_at', { ascending: false });
@@ -20,7 +20,7 @@ const DesignerApplication = {
   },
 
   async update(id, data) {
-    return supabase
+    return db
       .from('designer_applications')
       .update(data)
       .eq('id', parseInt(id))
@@ -29,7 +29,7 @@ const DesignerApplication = {
   },
 
   async countPending() {
-    return supabase
+    return db
       .from('designer_applications')
       .select('id', { count: 'exact', head: true })
       .eq('status', 'pending');

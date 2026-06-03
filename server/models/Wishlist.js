@@ -1,8 +1,8 @@
-const supabase = require('../config/supabase');
+const { supabaseAdmin: db } = require('../config/supabase');
 
 const Wishlist = {
   async findByUser(userId) {
-    return supabase
+    return db
       .from('wishlists')
       .select('product_id, created_at')
       .eq('user_id', userId)
@@ -10,7 +10,7 @@ const Wishlist = {
   },
 
   async create(userId, productId) {
-    return supabase
+    return db
       .from('wishlists')
       .insert({ user_id: userId, product_id: parseInt(productId) })
       .select()
@@ -18,7 +18,7 @@ const Wishlist = {
   },
 
   async remove(userId, productId) {
-    return supabase
+    return db
       .from('wishlists')
       .delete()
       .eq('user_id', userId)

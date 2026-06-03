@@ -1,4 +1,5 @@
 const supabase = require('../config/supabase');
+const { supabaseAdmin } = require('../config/supabase');
 const User = require('../models/User');
 
 const authService = {
@@ -14,7 +15,8 @@ const authService = {
     }
 
     const userId = authData.user.id;
-    const { error: profErr } = await User.create({ id: userId, name, email, role: role || 'user' });
+    // Use admin client (no session) so service_role key bypasses RLS
+    const { error: profErr } = await supabaseAdmin.from('profiles').insert({ id: userId, name, email, role: role || 'user' });
     if (profErr) return { error: 'Tạo hồ sơ thất bại', status: 500 };
 
     return {

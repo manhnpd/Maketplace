@@ -1,16 +1,16 @@
-const supabase = require('../config/supabase');
+const { supabaseAdmin: db } = require('../config/supabase');
 
 const Order = {
   async create(data) {
-    return supabase
-      .from('orders')
-      .insert(data)
-      .select()
-      .single();
+    if (!data.id) {
+      const { data: maxRow } = await db.from('orders').select('id').order('id', { ascending: false }).limit(1);
+      if (maxRow && maxRow.length > 0) data.id = maxRow[0].id + 1;
+    }
+    return db.from('orders').insert(data).select().single();
   },
 
   async findById(id) {
-    return supabase
+    return db
       .from('orders')
       .select('*, order_items(*)')
       .eq('id', parseInt(id))
@@ -18,7 +18,7 @@ const Order = {
   },
 
   async findByUser(userId, { from, to }) {
-    return supabase
+    return db
       .from('orders')
       .select('*, order_items(*)', { count: 'exact' })
       .eq('user_id', userId)
@@ -27,7 +27,7 @@ const Order = {
   },
 
   async findByIdAndUser(id, userId) {
-    return supabase
+    return db
       .from('orders')
       .select('*, order_items(*)')
       .eq('id', parseInt(id))
@@ -36,7 +36,7 @@ const Order = {
   },
 
   async findAll({ status, from, to }) {
-    let query = supabase
+    let query = db
       .from('orders')
       .select('*, order_items(*)', { count: 'exact' });
     if (status) query = query.eq('status', status);
@@ -45,7 +45,7 @@ const Order = {
   },
 
   async findByIds(ids, { from, to }) {
-    return supabase
+    return db
       .from('orders')
       .select('*', { count: 'exact' })
       .in('id', ids)
@@ -54,7 +54,7 @@ const Order = {
   },
 
   async updateStatus(id, data) {
-    return supabase
+    return db
       .from('orders')
       .update(data)
       .eq('id', parseInt(id))
@@ -64,12 +64,12 @@ const Order = {
 
   // Stats: get all orders with total and status
   async findAllForStats() {
-    return supabase.from('orders').select('id, total, status');
+    return db.from('orders').select('id, total, status');
   },
 
   // For designer analytics
   async findAllWithDates() {
-    return supabase.from('orders').select('id, created_at, status');
+    return db.from('orders').select('id, created_at, status');
   },
 };
 

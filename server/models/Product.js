@@ -1,9 +1,9 @@
-const supabase = require('../config/supabase');
+const { supabaseAdmin: db } = require('../config/supabase');
 
 const Product = {
   // List with filters, search, pagination
   async findAll({ filter, search, category, sort, from, to }) {
-    let query = supabase
+    let query = db
       .from('products')
       .select('*, categories(name, slug), designers(name)', { count: 'exact' });
 
@@ -20,7 +20,7 @@ const Product = {
 
     // Category filter
     if (category) {
-      const { data: catData } = await supabase
+      const { data: catData } = await db
         .from('categories')
         .select('id')
         .eq('slug', category.toLowerCase())
@@ -48,7 +48,7 @@ const Product = {
 
   // Single product by ID
   async findById(id) {
-    return supabase
+    return db
       .from('products')
       .select('*, categories(name, slug), designers(name, avatar, role)')
       .eq('id', parseInt(id))
@@ -57,7 +57,7 @@ const Product = {
 
   // Products by designer
   async findByDesigner(designerId) {
-    return supabase
+    return db
       .from('products')
       .select('*, categories(name)', { count: 'exact' })
       .eq('designer_id', designerId)
@@ -66,7 +66,7 @@ const Product = {
 
   // Products by designer — IDs only
   async findIdsByDesigner(designerId) {
-    return supabase
+    return db
       .from('products')
       .select('id')
       .eq('designer_id', designerId);
@@ -74,7 +74,7 @@ const Product = {
 
   // Products by designer with stats
   async findStatsByDesigner(designerId) {
-    return supabase
+    return db
       .from('products')
       .select('id, downloads, price')
       .eq('designer_id', designerId);
@@ -82,7 +82,7 @@ const Product = {
 
   // Products by designer with full detail for analytics
   async findAnalyticsByDesigner(designerId) {
-    return supabase
+    return db
       .from('products')
       .select('id, name, downloads, price, rating')
       .eq('designer_id', designerId);
@@ -90,7 +90,7 @@ const Product = {
 
   // Products by designer for public profile
   async findByDesignerPublic(designerId) {
-    return supabase
+    return db
       .from('products')
       .select('*, categories(name)')
       .eq('designer_id', designerId);
@@ -98,7 +98,7 @@ const Product = {
 
   // Find multiple products by IDs (for wishlist)
   async findByIds(ids) {
-    return supabase
+    return db
       .from('products')
       .select('*')
       .in('id', ids);
@@ -106,7 +106,7 @@ const Product = {
 
   // Check ownership
   async findOwnership(id) {
-    return supabase
+    return db
       .from('products')
       .select('designer_id')
       .eq('id', parseInt(id))
@@ -115,21 +115,31 @@ const Product = {
 
   // Count all
   async count() {
-    return supabase.from('products').select('id', { count: 'exact', head: true });
+    return db.from('products').select('id', { count: 'exact', head: true });
   },
 
   // Admin: list all products
   async findAllAdmin({ from, to }) {
-    return supabase
+    return db
       .from('products')
       .select('*, categories(name), designers(name)', { count: 'exact' })
       .order('id')
       .range(from, to);
   },
 
-  // Create product
+  // Create product — auto-assign next available ID to avoid sequence lag
   async create(data) {
-    return supabase
+    if (!data.id) {
+      const { data: maxRow } = await db
+        .from('products')
+        .select('id')
+        .order('id', { ascending: false })
+        .limit(1);
+      if (maxRow && maxRow.length > 0) {
+        data.id = maxRow[0].id + 1;
+      }
+    }
+    return db
       .from('products')
       .insert(data)
       .select()
@@ -138,7 +148,7 @@ const Product = {
 
   // Update product
   async update(id, data) {
-    return supabase
+    return db
       .from('products')
       .update(data)
       .eq('id', parseInt(id))
@@ -148,7 +158,7 @@ const Product = {
 
   // Delete product
   async remove(id) {
-    return supabase
+    return db
       .from('products')
       .delete()
       .eq('id', parseInt(id));

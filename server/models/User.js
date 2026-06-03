@@ -1,8 +1,8 @@
-const supabase = require('../config/supabase');
+const { supabaseAdmin: db } = require('../config/supabase');
 
 const User = {
   async findById(id) {
-    return supabase
+    return db
       .from('profiles')
       .select('*')
       .eq('id', id)
@@ -10,11 +10,11 @@ const User = {
   },
 
   async create(data) {
-    return supabase.from('profiles').insert(data);
+    return db.from('profiles').insert(data);
   },
 
   async findByName(userId) {
-    return supabase
+    return db
       .from('profiles')
       .select('name')
       .eq('id', userId)
@@ -22,7 +22,7 @@ const User = {
   },
 
   async findByEmail(email) {
-    return supabase
+    return db
       .from('profiles')
       .select('id')
       .eq('email', email)
@@ -30,7 +30,7 @@ const User = {
   },
 
   async updateName(id, name) {
-    return supabase
+    return db
       .from('profiles')
       .update({ name })
       .eq('id', id)
@@ -39,21 +39,21 @@ const User = {
   },
 
   async updateRole(id, role) {
-    return supabase
+    return db
       .from('profiles')
       .update({ role })
       .eq('id', id);
   },
 
   async findNamesByIds(ids) {
-    return supabase
+    return db
       .from('profiles')
       .select('id, name')
       .in('id', ids);
   },
 
   async count() {
-    return supabase.from('profiles').select('id', { count: 'exact', head: true });
+    return db.from('profiles').select('id', { count: 'exact', head: true });
   },
 };
 

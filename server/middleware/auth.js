@@ -18,9 +18,9 @@ const requireAuth = async (req, res, next) => {
     return res.status(401).json({ success: false, message: 'Token không hợp lệ hoặc đã hết hạn' });
   }
 
-  // Dùng authClient riêng để không ảnh hưởng service_role client
-  const supabase = require('../config/supabase');
-  const { data: profile } = await supabase
+  // Dùng supabaseAdmin để tránh session poisoning
+  const { supabaseAdmin } = require('../config/supabase');
+  const { data: profile } = await supabaseAdmin
     .from('profiles')
     .select('*')
     .eq('id', user.id)
@@ -63,8 +63,8 @@ const optionalAuth = async (req, res, next) => {
     const token = authHeader.split(' ')[1];
     const { data: { user } } = await authClient.auth.getUser(token);
     if (user) {
-      const supabase = require('../config/supabase');
-      const { data: profile } = await supabase
+      const { supabaseAdmin } = require('../config/supabase');
+      const { data: profile } = await supabaseAdmin
         .from('profiles')
         .select('*')
         .eq('id', user.id)

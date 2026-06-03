@@ -1,8 +1,8 @@
-const supabase = require('../config/supabase');
+const { supabaseAdmin: db } = require('../config/supabase');
 
 const Testimonial = {
   async findAll() {
-    return supabase.from('testimonials').select('*').order('id');
+    return db.from('testimonials').select('*').order('id');
   },
 };
 

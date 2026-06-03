@@ -1,12 +1,12 @@
-const supabase = require('../config/supabase');
+const { supabaseAdmin: db } = require('../config/supabase');
 
 const Designer = {
   async findAll() {
-    return supabase.from('designers').select('*').order('id');
+    return db.from('designers').select('*').order('id');
   },
 
   async findById(id) {
-    return supabase
+    return db
       .from('designers')
       .select('*')
       .eq('id', parseInt(id))
@@ -14,7 +14,7 @@ const Designer = {
   },
 
   async findByUserId(userId) {
-    return supabase
+    return db
       .from('designers')
       .select('*')
       .eq('user_id', userId)
@@ -22,11 +22,11 @@ const Designer = {
   },
 
   async findAllMatching() {
-    return supabase.from('designers').select('*');
+    return db.from('designers').select('*');
   },
 
   async update(id, data) {
-    return supabase
+    return db
       .from('designers')
       .update(data)
       .eq('id', id)
@@ -35,7 +35,7 @@ const Designer = {
   },
 
   async findBySlug(slug) {
-    return supabase
+    return db
       .from('designers')
       .select('id')
       .eq('slug', slug)

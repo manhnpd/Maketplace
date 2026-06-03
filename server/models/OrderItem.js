@@ -1,25 +1,25 @@
-const supabase = require('../config/supabase');
+const { supabaseAdmin: db } = require('../config/supabase');
 
 const OrderItem = {
   async createBulk(items) {
-    return supabase.from('order_items').insert(items);
+    return db.from('order_items').insert(items);
   },
 
   async findByProductIds(productIds) {
-    return supabase
+    return db
       .from('order_items')
       .select('order_id, product_id, product_name, quantity, price')
       .in('product_id', productIds);
   },
 
   async findAll() {
-    return supabase
+    return db
       .from('order_items')
       .select('quantity, price, product_id');
   },
 
   async findAllWithOrderId() {
-    return supabase
+    return db
       .from('order_items')
       .select('quantity, price, product_id, order_id');
   },

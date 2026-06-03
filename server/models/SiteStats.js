@@ -1,8 +1,8 @@
-const supabase = require('../config/supabase');
+const { supabaseAdmin: db } = require('../config/supabase');
 
 const SiteStats = {
   async get() {
-    return supabase.from('site_stats').select('*').single();
+    return db.from('site_stats').select('*').single();
   },
 };
 
