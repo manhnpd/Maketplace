@@ -1,41 +1,51 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import Header from './layouts/Header';
-import Footer from './layouts/Footer';
-import CategoryPage from './pages/CategoryPage';
-import ProductDetailPage from './pages/ProductDetailPage';
-import CheckoutPage from './pages/CheckoutPage';
-import DesignerRegisterPage from './pages/DesignerRegisterPage';
-import SearchPage from './pages/SearchPage';
-import WishlistPage from './pages/WishlistPage';
-import AccountPage from './pages/AccountPage';
-import OrderHistoryPage from './pages/OrderHistoryPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import AdminLayout from './pages/admin/AdminLayout';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminProducts from './pages/admin/AdminProducts';
-import AdminOrders from './pages/admin/AdminOrders';
-import AdminDesigners from './pages/admin/AdminDesigners';
-import DesignerLayout from './pages/designer/DesignerLayout';
-import DesignerDashboard from './pages/designer/DesignerDashboard';
-import DesignerProducts from './pages/designer/DesignerProducts';
-import DesignerOrders from './pages/designer/DesignerOrders';
-import DesignerAnalytics from './pages/designer/DesignerAnalytics';
-import DesignerSettings from './pages/designer/DesignerSettings';
-import DesignerPublicProfile from './pages/DesignerPublicProfile';
-import AuthModal from './components/AuthModal';
-import CartDrawer from './components/CartDrawer';
-import CTA from './components/CTA';
+// Layout
+import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
+// Common components
+import AuthModal from './components/common/AuthModal';
+import CartDrawer from './components/common/CartDrawer';
+import CTA from './components/common/CTA';
+// Landing page sections
 import Hero from './components/sections/Hero';
-import ProductGrid from './components/sections/ProductGrid';
-import Categories from './components/sections/Categories';
 import HowItWorks from './components/sections/HowItWorks';
 import Pricing from './components/sections/Pricing';
 import Designers from './components/sections/Designers';
 import Testimonials from './components/sections/Testimonials';
+// Feature: Product
+import ProductGrid from './features/product/components/ProductGridSection';
+import Categories from './features/product/components/Categories';
+import CategoryPage from './features/product/pages/CategoryPage';
+import ProductDetailPage from './features/product/pages/ProductDetailPage';
+import SearchPage from './features/product/pages/SearchPage';
+// Feature: Order
+import CheckoutPage from './features/order/pages/CheckoutPage';
+import OrderHistoryPage from './features/order/pages/OrderHistoryPage';
+// Feature: Account
+import AccountPage from './features/account/pages/AccountPage';
+import ForgotPasswordPage from './features/account/pages/ForgotPasswordPage';
+// Feature: Wishlist
+import WishlistPage from './features/wishlist/pages/WishlistPage';
+// Feature: Designer
+import DesignerPublicProfile from './features/designer/pages/DesignerPublicProfile';
+import DesignerRegisterPage from './features/designer/pages/DesignerRegisterPage';
+// Feature: Admin
+import AdminLayout from './features/admin/pages/AdminLayout';
+import AdminDashboard from './features/admin/pages/AdminDashboard';
+import AdminProducts from './features/admin/pages/AdminProducts';
+import AdminOrders from './features/admin/pages/AdminOrders';
+import AdminDesigners from './features/admin/pages/AdminDesigners';
+// Feature: Designer Dashboard
+import DesignerLayout from './features/designer-dashboard/pages/DesignerLayout';
+import DesignerDashboard from './features/designer-dashboard/pages/DesignerDashboard';
+import DesignerProducts from './features/designer-dashboard/pages/DesignerProducts';
+import DesignerOrders from './features/designer-dashboard/pages/DesignerOrders';
+import DesignerAnalytics from './features/designer-dashboard/pages/DesignerAnalytics';
+import DesignerSettings from './features/designer-dashboard/pages/DesignerSettings';
+// Contexts
 import { useAuthContext } from './contexts/AuthContext';
 import { useToastContext } from './contexts/ToastContext';
-import { useCartContext } from './contexts/CartContext';
 import { getStats } from './services/siteService';
 
 function App() {
